@@ -1,5 +1,5 @@
 # sb-ecom 电商项目
 
 ## 项目文档
-- [学习笔记](docs\notes)
+- [学习笔记](docs/notes/study-notes.md)
 - [架构图](docs/assets/flow.png)
