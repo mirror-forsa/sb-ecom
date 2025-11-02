@@ -1,6 +1,6 @@
-构建电商Spring-Boot
+﻿鏋勫缓鐢靛晢Spring-Boot
 
-逻辑结构图：
+閫昏緫缁撴瀯鍥撅細
 
 ![image-20251030155444969](C:\Users\forsa\AppData\Roaming\Typora\typora-user-images\image-20251030155444969.png)
 
@@ -14,11 +14,11 @@
 
 
 
-梳理思路：
+姊崇悊鎬濊矾锛?
 
-这是我现在的包结构：
+杩欐槸鎴戠幇鍦ㄧ殑鍖呯粨鏋勶細
 
-![image-20251030173509382](构建电商Spring-Boot.assets/image-20251030173509382.png)
+![image-20251030173509382](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251030173509382.png)
 
 
 
@@ -30,11 +30,11 @@ public class Category {
     private Long categoryId;
     private String categoryName;
 
-    // 无参构造
+    // 鏃犲弬鏋勯€?
     public Category() {
     }
 
-    // 有参构造
+    // 鏈夊弬鏋勯€?
     public Category(Long categoryId, String categoryName) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -83,19 +83,19 @@ public class CategoryColler {
 }
 ```
 
-**这里注意下 @GetMapping 的return值，因为我传错了**
+**杩欓噷娉ㄦ剰涓?@GetMapping 鐨剅eturn鍊硷紝鍥犱负鎴戜紶閿欎簡**
 
 
 
 
 
-2. 引入接口
+2. 寮曞叆鎺ュ彛
 
-首先在`service`层
+棣栧厛鍦╜service`灞?
 
-创建接口，明确我传的对象是谁，一个查询所有的表单`getAllCategories`和创建`addCategory`
+鍒涘缓鎺ュ彛锛屾槑纭垜浼犵殑瀵硅薄鏄皝锛屼竴涓煡璇㈡墍鏈夌殑琛ㄥ崟`getAllCategories`鍜屽垱寤篳addCategory`
 
-注：写到这发现命名不太规范，后面修改成`createCategory`
+娉細鍐欏埌杩欏彂鐜板懡鍚嶄笉澶鑼冿紝鍚庨潰淇敼鎴恅createCategory`
 
 ```java
 public interface CategoryService {
@@ -108,7 +108,7 @@ public interface CategoryService {
 
 
 
-第二步创建对于接口的实现类`CategoryServiceImpl`
+绗簩姝ュ垱寤哄浜庢帴鍙ｇ殑瀹炵幇绫籤CategoryServiceImpl`
 
 ```java
 @Service
@@ -134,7 +134,7 @@ public class CategoryServiceImpl implements  CategoryService {
 
 
 
-最后修改控制层`CategoryController`
+鏈€鍚庝慨鏀规帶鍒跺眰`CategoryController`
 
 ```java
 public class CategoryController {
@@ -160,22 +160,22 @@ public class CategoryController {
 
 
 
-### 个人注意的点：
+### 涓汉娉ㄦ剰鐨勭偣锛?
 
-**@Autowired我是因为添加错误地方，应该添加到controller?所以为什么在service会出错**
+**@Autowired鎴戞槸鍥犱负娣诲姞閿欒鍦版柟锛屽簲璇ユ坊鍔犲埌controller?鎵€浠ヤ负浠€涔堝湪service浼氬嚭閿?*
 
-Spring 容器会理解为：
+Spring 瀹瑰櫒浼氱悊瑙ｄ负锛?
 
-> “帮我注入一个类型是 `List` 的 Bean。”
+> 鈥滃府鎴戞敞鍏ヤ竴涓被鍨嬫槸 `List` 鐨?Bean銆傗€?
 
-但是你 **根本没有在容器里定义 `List` 的 Bean**，所以 Spring 报错
+浣嗘槸浣?**鏍规湰娌℃湁鍦ㄥ鍣ㄩ噷瀹氫箟 `List` 鐨?Bean**锛屾墍浠?Spring 鎶ラ敊
 
-💡 **关键点**：`@Autowired` 只会注入 **Spring 容器管理的 Bean**，而普通的 `new ArrayList<>()` 并不是 Bean。
+馃挕 **鍏抽敭鐐?*锛歚@Autowired` 鍙細娉ㄥ叆 **Spring 瀹瑰櫒绠＄悊鐨?Bean**锛岃€屾櫘閫氱殑 `new ArrayList<>()` 骞朵笉鏄?Bean銆?
 
-| 对象类型                                     | Spring 能否注入（@Autowired） | 说明                      |
+| 瀵硅薄绫诲瀷                                     | Spring 鑳藉惁娉ㄥ叆锛園Autowired锛?| 璇存槑                      |
 | -------------------------------------------- | ----------------------------- | ------------------------- |
-| `@Service`、`@Component`、`@Bean` 创建的对象 | ✅ 可以注入                    | 容器管理的 Bean           |
-| 普通 `new ArrayList<>()`                     | ❌ 不能注入                    | Spring 容器不知道它的存在 |
+| `@Service`銆乣@Component`銆乣@Bean` 鍒涘缓鐨勫璞?| 鉁?鍙互娉ㄥ叆                    | 瀹瑰櫒绠＄悊鐨?Bean           |
+| 鏅€?`new ArrayList<>()`                     | 鉂?涓嶈兘娉ㄥ叆                    | Spring 瀹瑰櫒涓嶇煡閬撳畠鐨勫瓨鍦?|
 
 ```java
 @RestController
@@ -203,51 +203,51 @@ public class CategoryController {
 
 
 
-### Challenge: Managing ID’s
+### Challenge: Managing ID鈥檚
 
 [05:56:18](https://www.youtube.com/watch?v=m559BxR30ls&t=21378s) 
 
-问题：在springBoot,例如用户在创建数据时候，Id永远不会被用户输入是什么意思？
+闂锛氬湪springBoot,渚嬪鐢ㄦ埛鍦ㄥ垱寤烘暟鎹椂鍊欙紝Id姘歌繙涓嶄細琚敤鎴疯緭鍏ユ槸浠€涔堟剰鎬濓紵
 
-在Spring Boot中使用JPA（Java Persistence API）来处理数据持久化时（例如构建电商应用，如视频中提到的那个项目），ID字段通常被设计为自动生成，而不是由用户手动输入。这是一个常见的数据库设计实践，用于确保数据的唯一性和安全性。
+鍦⊿pring Boot涓娇鐢↗PA锛圝ava Persistence API锛夋潵澶勭悊鏁版嵁鎸佷箙鍖栨椂锛堜緥濡傛瀯寤虹數鍟嗗簲鐢紝濡傝棰戜腑鎻愬埌鐨勯偅涓」鐩級锛孖D瀛楁閫氬父琚璁′负鑷姩鐢熸垚锛岃€屼笉鏄敱鐢ㄦ埛鎵嬪姩杈撳叆銆傝繖鏄竴涓父瑙佺殑鏁版嵁搴撹璁″疄璺碉紝鐢ㄤ簬纭繚鏁版嵁鐨勫敮涓€鎬у拰瀹夊叏鎬с€?
 
-##### 1. **ID自动生成的含义**
+##### 1. **ID鑷姩鐢熸垚鐨勫惈涔?*
 
-- 用户创建数据时不输入ID
+- 鐢ㄦ埛鍒涘缓鏁版嵁鏃朵笉杈撳叆ID
 
-  ：当用户通过API（如POST请求）创建新记录（例如创建一个新的“Category”或“Product”）时，不需要在请求体（JSON数据）中提供ID值。ID会由系统（数据库或JPA）自动分配。
+  锛氬綋鐢ㄦ埛閫氳繃API锛堝POST璇锋眰锛夊垱寤烘柊璁板綍锛堜緥濡傚垱寤轰竴涓柊鐨勨€淐ategory鈥濇垨鈥淧roduct鈥濓級鏃讹紝涓嶉渶瑕佸湪璇锋眰浣擄紙JSON鏁版嵁锛変腑鎻愪緵ID鍊笺€侷D浼氱敱绯荤粺锛堟暟鎹簱鎴朖PA锛夎嚜鍔ㄥ垎閰嶃€?
 
-  - 例如：在视频的电商项目中，当你添加一个新类别（Category）时，用户只需提供如“name”等字段，ID会自动生成（如1、2、3...）。
-  - 如果用户试图在请求中输入ID（例如{"id": 100, "name": "Books"}），系统通常会忽略它或抛出错误，因为ID是系统管理的。
+  - 渚嬪锛氬湪瑙嗛鐨勭數鍟嗛」鐩腑锛屽綋浣犳坊鍔犱竴涓柊绫诲埆锛圕ategory锛夋椂锛岀敤鎴峰彧闇€鎻愪緵濡傗€渘ame鈥濈瓑瀛楁锛孖D浼氳嚜鍔ㄧ敓鎴愶紙濡?銆?銆?...锛夈€?
+  - 濡傛灉鐢ㄦ埛璇曞浘鍦ㄨ姹備腑杈撳叆ID锛堜緥濡倇"id": 100, "name": "Books"}锛夛紝绯荤粺閫氬父浼氬拷鐣ュ畠鎴栨姏鍑洪敊璇紝鍥犱负ID鏄郴缁熺鐞嗙殑銆?
 
-- 为什么这样设计？
+- 涓轰粈涔堣繖鏍疯璁★紵
 
-  - **唯一性保证**：ID是数据库表的主键（Primary Key），必须全局唯一。如果允许用户输入，可能会导致重复ID、数据冲突或安全问题（如用户恶意输入已存在的ID覆盖数据）。
-  - **自动化管理**：数据库（如MySQL、H2）可以自动递增ID（例如从1开始，每次+1），这简化了开发，避免手动跟踪ID。
-  - **安全性**：防止用户篡改ID，导致数据泄露或非法操作。
-  - **视频中的上下文**：转录中提到“Challenge: Managing ID’s”和“Generation Types For Identity”，这正是讨论如何处理ID的挑战。视频强调使用JPA将Java类转换为数据库表时，ID应自动生成，以优化应用（如电商中的订单ID、产品ID）。
+  - **鍞竴鎬т繚璇?*锛欼D鏄暟鎹簱琛ㄧ殑涓婚敭锛圥rimary Key锛夛紝蹇呴』鍏ㄥ眬鍞竴銆傚鏋滃厑璁哥敤鎴疯緭鍏ワ紝鍙兘浼氬鑷撮噸澶岻D銆佹暟鎹啿绐佹垨瀹夊叏闂锛堝鐢ㄦ埛鎭舵剰杈撳叆宸插瓨鍦ㄧ殑ID瑕嗙洊鏁版嵁锛夈€?
+  - **鑷姩鍖栫鐞?*锛氭暟鎹簱锛堝MySQL銆丠2锛夊彲浠ヨ嚜鍔ㄩ€掑ID锛堜緥濡備粠1寮€濮嬶紝姣忔+1锛夛紝杩欑畝鍖栦簡寮€鍙戯紝閬垮厤鎵嬪姩璺熻釜ID銆?
+  - **瀹夊叏鎬?*锛氶槻姝㈢敤鎴风鏀笽D锛屽鑷存暟鎹硠闇叉垨闈炴硶鎿嶄綔銆?
+  - **瑙嗛涓殑涓婁笅鏂?*锛氳浆褰曚腑鎻愬埌鈥淐hallenge: Managing ID鈥檚鈥濆拰鈥淕eneration Types For Identity鈥濓紝杩欐鏄璁哄浣曞鐞咺D鐨勬寫鎴樸€傝棰戝己璋冧娇鐢↗PA灏咼ava绫昏浆鎹负鏁版嵁搴撹〃鏃讹紝ID搴旇嚜鍔ㄧ敓鎴愶紝浠ヤ紭鍖栧簲鐢紙濡傜數鍟嗕腑鐨勮鍗旾D銆佷骇鍝両D锛夈€?
 
-如果用户输入ID，可能会出现：
+濡傛灉鐢ㄦ埛杈撳叆ID锛屽彲鑳戒細鍑虹幇锛?
 
-- 数据库错误（如主键冲突）。
+- 鏁版嵁搴撻敊璇紙濡備富閿啿绐侊級銆?
 
-- JPA忽略用户提供的ID，并生成新ID
+- JPA蹇界暐鐢ㄦ埛鎻愪緵鐨処D锛屽苟鐢熸垚鏂癐D
 
   
 
-这里我先谈谈我的解决办法：
+杩欓噷鎴戝厛璋堣皥鎴戠殑瑙ｅ喅鍔炴硶锛?
 
-因为我想到此时案例中的数据是通过接口的实例化传入的数据，所以要让框架自动生成id
+鍥犱负鎴戞兂鍒版鏃舵渚嬩腑鐨勬暟鎹槸閫氳繃鎺ュ彛鐨勫疄渚嬪寲浼犲叆鐨勬暟鎹紝鎵€浠ヨ璁╂鏋惰嚜鍔ㄧ敓鎴恑d
 
-所以我要对`service`层的`CategoryServiceImpl.class`中进行修改，
+鎵€浠ユ垜瑕佸`service`灞傜殑`CategoryServiceImpl.class`涓繘琛屼慨鏀癸紝
 
-思路是：
+鎬濊矾鏄細
 
-​	我想要通过`if`和`for`,利用`if`方法，去判断如果我传入的数据`ID=null`，就自增。
+鈥?鎴戞兂瑕侀€氳繃`if`鍜宍for`,鍒╃敤`if`鏂规硶锛屽幓鍒ゆ柇濡傛灉鎴戜紶鍏ョ殑鏁版嵁`ID=null`锛屽氨鑷銆?
 
-​	`for`方法去判断，我传入的数据是重复
+鈥?`for`鏂规硶鍘诲垽鏂紝鎴戜紶鍏ョ殑鏁版嵁鏄噸澶?
 
-最后实现确实实现保证不会重复，但是并不会自增。
+鏈€鍚庡疄鐜扮‘瀹炲疄鐜颁繚璇佷笉浼氶噸澶嶏紝浣嗘槸骞朵笉浼氳嚜澧炪€?
 
 ```java
 @Override
@@ -255,9 +255,9 @@ public class CategoryController {
        if (category.getCategoryId() == null) {
            category.setCategoryId(nextId++);
 }
-        //目前实现不了，因为当你创建一个类别的时候，categoryId是null，所以会报空指针异常
-        // nextId根本没有数据走进去
-        // 解决办法：要不@Id,要不配置类里构造List
+        //鐩墠瀹炵幇涓嶄簡锛屽洜涓哄綋浣犲垱寤轰竴涓被鍒殑鏃跺€欙紝categoryId鏄痭ull锛屾墍浠ヤ細鎶ョ┖鎸囬拡寮傚父
+        // nextId鏍规湰娌℃湁鏁版嵁璧拌繘鍘?
+        // 瑙ｅ喅鍔炴硶锛氳涓岪Id,瑕佷笉閰嶇疆绫婚噷鏋勯€燣ist
 
        for (Category c : categories) {
             if (c.getCategoryName().equals(category.getCategoryName())) {
@@ -270,7 +270,7 @@ public class CategoryController {
 
 
 
-最佳解决部分，我不用去判断用户传入的id是否会重复，我强制的将传入的数据实现自增即可。
+鏈€浣宠В鍐抽儴鍒嗭紝鎴戜笉鐢ㄥ幓鍒ゆ柇鐢ㄦ埛浼犲叆鐨刬d鏄惁浼氶噸澶嶏紝鎴戝己鍒剁殑灏嗕紶鍏ョ殑鏁版嵁瀹炵幇鑷鍗冲彲銆?
 
 ```java
  private Long nextId = 1L;
@@ -304,7 +304,7 @@ public String deleteCategory(@PathVariable Long categoryId) {
 
 ICategoryService:
 
-新添加的数据：（add data about delete）
+鏂版坊鍔犵殑鏁版嵁锛氾紙add data about delete锛?
 
 ```java
 String deleteCategory(Long categoryId)
@@ -317,7 +317,7 @@ CategoryServiceImpl:
 ```java
 @Override
 public String deleteCategory(Long categoryId){
-    // 把model的Category转化成stream, 然后根据id过滤出category,再equals进行比对，找到对应的category
+    // 鎶妋odel鐨凜ategory杞寲鎴恠tream, 鐒跺悗鏍规嵁id杩囨护鍑篶ategory,鍐峞quals杩涜姣斿锛屾壘鍒板搴旂殑category
 	Category category = categories.stream()
 			 .filter(c -> c.getCategoryId().equals(categoryId))
 			 .findFirst().get();
@@ -327,17 +327,17 @@ public String deleteCategory(Long categoryId){
 }
 ```
 
-但是可能存在的问题：
+浣嗘槸鍙兘瀛樺湪鐨勯棶棰橈細
 
-例如我如果已经删除了`Id=1`这个数据，如果我再次删除会抛出异常。
+渚嬪鎴戝鏋滃凡缁忓垹闄や簡`Id=1`杩欎釜鏁版嵁锛屽鏋滄垜鍐嶆鍒犻櫎浼氭姏鍑哄紓甯搞€?
 
-![image-20251031144142855](构建电商Spring-Boot.assets/image-20251031144142855.png)
+![image-20251031144142855](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251031144142855.png)
 
-为了解决这个，我希望如果删除类别中没有的数据，我希望抛出错误信息，such:"no find Id"
+涓轰簡瑙ｅ喅杩欎釜锛屾垜甯屾湜濡傛灉鍒犻櫎绫诲埆涓病鏈夌殑鏁版嵁锛屾垜甯屾湜鎶涘嚭閿欒淇℃伅锛宻uch:"no find Id"
 
-这是需要加入`orElse`
+杩欐槸闇€瑕佸姞鍏orElse`
 
-即：先用 `stream(...).filter(...)` 找到 `Category category`，如果没有对应的 `categoryId` 的条目，那么 `category` 会是 `null`（用了 `orElse(null)`），此时就应该返回 “未找到” 的提示。
+鍗筹細鍏堢敤 `stream(...).filter(...)` 鎵惧埌 `Category category`锛屽鏋滄病鏈夊搴旂殑 `categoryId` 鐨勬潯鐩紝閭ｄ箞 `category` 浼氭槸 `null`锛堢敤浜?`orElse(null)`锛夛紝姝ゆ椂灏卞簲璇ヨ繑鍥?鈥滄湭鎵惧埌鈥?鐨勬彁绀恒€?
 
 CategoryServiceImpl:
 
@@ -359,9 +359,9 @@ public String deleteCategory(Long categoryId) {
 
 
 
-<img src="构建电商Spring-Boot.assets/image-20251031145201580.png" alt="image-20251031145201580" style="zoom:50%;" />
+<img src="鏋勫缓鐢靛晢Spring-Boot.assets/image-20251031145201580.png" alt="image-20251031145201580" style="zoom:50%;" />
 
-个人错误：
+涓汉閿欒锛?
 
 ```
 if (categoryId == null) {
@@ -370,9 +370,9 @@ if (categoryId == null) {
     
 ```
 
-直接逻辑错误！！！！
+鐩存帴閫昏緫閿欒锛侊紒锛侊紒
 
-现在的意思是：如果传入的方法参数 `categoryId` 本身为 `null`，就返回 ‘未找到’”——而不是判断查询结果是否为空。
+鐜板湪鐨勬剰鎬濇槸锛氬鏋滀紶鍏ョ殑鏂规硶鍙傛暟 `categoryId` 鏈韩涓?`null`锛屽氨杩斿洖 鈥樻湭鎵惧埌鈥欌€濃€斺€旇€屼笉鏄垽鏂煡璇㈢粨鏋滄槸鍚︿负绌恒€?
 
 
 
@@ -382,15 +382,15 @@ if (categoryId == null) {
 
 [06:12:26](https://www.youtube.com/watch?v=m559BxR30ls&t=22346s) 
 
-即使是上述方法，也有很大的问题，
+鍗充娇鏄笂杩版柟娉曪紝涔熸湁寰堝ぇ鐨勯棶棰橈紝
 
-![image-20251031152232104](构建电商Spring-Boot.assets/image-20251031152232104.png)
+![image-20251031152232104](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251031152232104.png)
 
-例如这里我删除111,这个数据当然不存在，但是成功抛出`Category not found `的异常，但是问题是它返回的状态码很有问题？
+渚嬪杩欓噷鎴戝垹闄?11,杩欎釜鏁版嵁褰撶劧涓嶅瓨鍦紝浣嗘槸鎴愬姛鎶涘嚭`Category not found `鐨勫紓甯革紝浣嗘槸闂鏄畠杩斿洖鐨勭姸鎬佺爜寰堟湁闂锛?
 
-200ok，不应该是404没有找到吗？
+200ok锛屼笉搴旇鏄?04娌℃湁鎵惧埌鍚楋紵
 
-所以我们需要用的ResponseEntity Class，来自定义状态
+鎵€浠ユ垜浠渶瑕佺敤鐨凴esponseEntity Class锛屾潵鑷畾涔夌姸鎬?
 
 
 
@@ -408,9 +408,9 @@ if (categoryId == null) {
 
 ```
 
-![image-20251031155128292](构建电商Spring-Boot.assets/image-20251031155128292.png)
+![image-20251031155128292](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251031155128292.png)
 
-上面图片的问题是因为在Controller没有捕获异常引起的问题：
+涓婇潰鍥剧墖鐨勯棶棰樻槸鍥犱负鍦–ontroller娌℃湁鎹曡幏寮傚父寮曡捣鐨勯棶棰橈細
 
 ```java
 @DeleteMapping("api/admin/categories/{categoryId}")
@@ -420,7 +420,7 @@ public String deleteCategory(@PathVariable Long categoryId) {
 }
 ```
 
-修正后：
+淇鍚庯細
 
 ```java
  @DeleteMapping("api/admin/categories/{categoryId}")
@@ -434,17 +434,17 @@ public String deleteCategory(@PathVariable Long categoryId) {
     }
 ```
 
-![image-20251031154806419](构建电商Spring-Boot.assets/image-20251031154806419.png)
+![image-20251031154806419](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251031154806419.png)
 
 
 
-这样当你要删除一个不存在的Id数时,就可以返回正常的状态码和自定义语句。
+杩欐牱褰撲綘瑕佸垹闄や竴涓笉瀛樺湪鐨処d鏁版椂,灏卞彲浠ヨ繑鍥炴甯哥殑鐘舵€佺爜鍜岃嚜瀹氫箟璇彞銆?
 
 
 
 ### Using ResponseEntity for all Endpoints
 
-try catch 返回的相似的方法
+try catch 杩斿洖鐨勭浉浼肩殑鏂规硶
 
 ```
 return new ResponseEntity<>(status, HttpStatus.OK);
@@ -452,45 +452,45 @@ return ResponseEntity.ok(status);
 return ResponseEntity.status(HttpStatus.OK).body(status);
 ```
 
-这三种写法其实都是在使用 ResponseEntity 来构造和返回 HTTP 响应
+杩欎笁绉嶅啓娉曞叾瀹為兘鏄湪浣跨敤 ResponseEntity 鏉ユ瀯閫犲拰杩斿洖 HTTP 鍝嶅簲
 
-##### 三者差别（什么时候用哪一个）
+##### 涓夎€呭樊鍒紙浠€涔堟椂鍊欑敤鍝竴涓級
 
-- 如果你确定：响应状态就是 200 OK，且只返回一个简单 body，没有额外头部或特殊状态 → 使用 `ResponseEntity.ok(status)` 足够、简洁。
-- 如果你需要指定状态（哪怕只是 OK）但可能以后扩展，比如添加头、改变状态 → 使用 `ResponseEntity.status(HttpStatus.OK).body(status)` 更灵活。
-- 使用 `new ResponseEntity<>(status, HttpStatus.OK)` 通常在你习惯“构造器方式”或在某些老代码里，功能与第一种类似，但可读性稍逊于静态方法形式。
-- 从维护性/可读性角度，推荐第二或第三种写法。
-
-
-
-### 使用 ResponseEntity 的好处
-
-1. **完整控制 HTTP 响应**
-    ResponseEntity 表示 **整个 HTTP 响应**：状态码（status）、响应头（headers）、响应体（body）。[Baeldung on Kotlin+2Stack Overflow+2](https://www.baeldung.com/spring-response-entity?utm_source=chatgpt.com)
-    例如：你可以返回 404（Not Found）而不仅仅是默认 200，或者给客户端返回特定 header。[Medium+1](https://medium.com/nerd-for-tech/importance-of-using-responseentity-5e37da704e88?utm_source=chatgpt.com)
-2. **更精确表达业务结果**
-    不同操作可能有不同结果、不同状态码：
-   - 查询成功 → 200 OK（并返回数据）
-   - 查询找不到 → 404 Not Found
-   - 新增成功 → 201 Created
-   - 删除成功但无返回内容 → 204 No Content
-      用 ResponseEntity 可以明确返回这些。[DEV Community](https://dev.to/debeshpg90/responseentity-in-spring-boot-httpstatus-rest-api-java-spring-2kg7?utm_source=chatgpt.com)
-      如果只返回一个普通对象，Spring 默认状态为 200，可能无法表达“资源不存在”、“创建成功并返回位置”这些细节。
-3. **增加响应头／自定义 header**
-    有时候你需要在响应里加 header：例如 `Location`（新创建资源的 URL）、`ETag`、缓存指令、自定义 header。ResponseEntity 让这变得容易。[Baeldung on Kotlin](https://www.baeldung.com/spring-response-entity?utm_source=chatgpt.com)
-4. **统一错误/特殊场景处理**
-    对于“操作失败”、“资源不存在”的情况，你可以用 ResponseEntity 返回合适的状态码、错误消息、结构化体（比如一个 JSON 错误对象），而不是仅仅返回一个普通对象或抛异常让框架默认为 500。这个让 API 更清晰、客户端更好理解。
+- 濡傛灉浣犵‘瀹氾細鍝嶅簲鐘舵€佸氨鏄?200 OK锛屼笖鍙繑鍥炰竴涓畝鍗?body锛屾病鏈夐澶栧ご閮ㄦ垨鐗规畩鐘舵€?鈫?浣跨敤 `ResponseEntity.ok(status)` 瓒冲銆佺畝娲併€?
+- 濡傛灉浣犻渶瑕佹寚瀹氱姸鎬侊紙鍝€曞彧鏄?OK锛変絾鍙兘浠ュ悗鎵╁睍锛屾瘮濡傛坊鍔犲ご銆佹敼鍙樼姸鎬?鈫?浣跨敤 `ResponseEntity.status(HttpStatus.OK).body(status)` 鏇寸伒娲汇€?
+- 浣跨敤 `new ResponseEntity<>(status, HttpStatus.OK)` 閫氬父鍦ㄤ綘涔犳儻鈥滄瀯閫犲櫒鏂瑰紡鈥濇垨鍦ㄦ煇浜涜€佷唬鐮侀噷锛屽姛鑳戒笌绗竴绉嶇被浼硷紝浣嗗彲璇绘€х◢閫婁簬闈欐€佹柟娉曞舰寮忋€?
+- 浠庣淮鎶ゆ€?鍙鎬ц搴︼紝鎺ㄨ崘绗簩鎴栫涓夌鍐欐硶銆?
 
 
 
-**但是并不是都使用ResponseEntity ！**
+### 浣跨敤 ResponseEntity 鐨勫ソ澶?
 
-虽然很多场景用 ResponseEntity 很合适，但并非所有方法都必须它。比如：
+1. **瀹屾暣鎺у埗 HTTP 鍝嶅簲**
+    ResponseEntity 琛ㄧず **鏁翠釜 HTTP 鍝嶅簲**锛氱姸鎬佺爜锛坰tatus锛夈€佸搷搴斿ご锛坔eaders锛夈€佸搷搴斾綋锛坆ody锛夈€俒Baeldung on Kotlin+2Stack Overflow+2](https://www.baeldung.com/spring-response-entity?utm_source=chatgpt.com)
+    渚嬪锛氫綘鍙互杩斿洖 404锛圢ot Found锛夎€屼笉浠呬粎鏄粯璁?200锛屾垨鑰呯粰瀹㈡埛绔繑鍥炵壒瀹?header銆俒Medium+1](https://medium.com/nerd-for-tech/importance-of-using-responseentity-5e37da704e88?utm_source=chatgpt.com)
+2. **鏇寸簿纭〃杈句笟鍔＄粨鏋?*
+    涓嶅悓鎿嶄綔鍙兘鏈変笉鍚岀粨鏋溿€佷笉鍚岀姸鎬佺爜锛?
+   - 鏌ヨ鎴愬姛 鈫?200 OK锛堝苟杩斿洖鏁版嵁锛?
+   - 鏌ヨ鎵句笉鍒?鈫?404 Not Found
+   - 鏂板鎴愬姛 鈫?201 Created
+   - 鍒犻櫎鎴愬姛浣嗘棤杩斿洖鍐呭 鈫?204 No Content
+      鐢?ResponseEntity 鍙互鏄庣‘杩斿洖杩欎簺銆俒DEV Community](https://dev.to/debeshpg90/responseentity-in-spring-boot-httpstatus-rest-api-java-spring-2kg7?utm_source=chatgpt.com)
+      濡傛灉鍙繑鍥炰竴涓櫘閫氬璞★紝Spring 榛樿鐘舵€佷负 200锛屽彲鑳芥棤娉曡〃杈锯€滆祫婧愪笉瀛樺湪鈥濄€佲€滃垱寤烘垚鍔熷苟杩斿洖浣嶇疆鈥濊繖浜涚粏鑺傘€?
+3. **澧炲姞鍝嶅簲澶达紡鑷畾涔?header**
+    鏈夋椂鍊欎綘闇€瑕佸湪鍝嶅簲閲屽姞 header锛氫緥濡?`Location`锛堟柊鍒涘缓璧勬簮鐨?URL锛夈€乣ETag`銆佺紦瀛樻寚浠ゃ€佽嚜瀹氫箟 header銆俁esponseEntity 璁╄繖鍙樺緱瀹规槗銆俒Baeldung on Kotlin](https://www.baeldung.com/spring-response-entity?utm_source=chatgpt.com)
+4. **缁熶竴閿欒/鐗规畩鍦烘櫙澶勭悊**
+    瀵逛簬鈥滄搷浣滃け璐モ€濄€佲€滆祫婧愪笉瀛樺湪鈥濈殑鎯呭喌锛屼綘鍙互鐢?ResponseEntity 杩斿洖鍚堥€傜殑鐘舵€佺爜銆侀敊璇秷鎭€佺粨鏋勫寲浣擄紙姣斿涓€涓?JSON 閿欒瀵硅薄锛夛紝鑰屼笉鏄粎浠呰繑鍥炰竴涓櫘閫氬璞℃垨鎶涘紓甯歌妗嗘灦榛樿涓?500銆傝繖涓 API 鏇存竻鏅般€佸鎴风鏇村ソ鐞嗚В銆?
 
-- 如果你的 Controller 方法只做“查询并返回对象”，并且逻辑很简单：总是成功、有数据返回且始终状态为 200，那你可以直接返回实体对象（比如 `public Category getCategory(...)` 而不是 `ResponseEntity`）。Spring 会自动把返回体放入响应，状态默认为 200。[Stack Overflow+1](https://stackoverflow.com/questions/61138943/what-is-responseentity-for-and-why-should-i-keep-it?utm_source=chatgpt.com)
-- 如果你用的是全局异常处理（比如 ControllerAdvice + ExceptionHandler）来统一处理错误状态码、错误消息，你的方法就可以更简洁。只有在需要“特殊状态码”或“头部”或“没有返回体”的时候才用 ResponseEntity。
 
-优化之后：
+
+**浣嗘槸骞朵笉鏄兘浣跨敤ResponseEntity 锛?*
+
+铏界劧寰堝鍦烘櫙鐢?ResponseEntity 寰堝悎閫傦紝浣嗗苟闈炴墍鏈夋柟娉曢兘蹇呴』瀹冦€傛瘮濡傦細
+
+- 濡傛灉浣犵殑 Controller 鏂规硶鍙仛鈥滄煡璇㈠苟杩斿洖瀵硅薄鈥濓紝骞朵笖閫昏緫寰堢畝鍗曪細鎬绘槸鎴愬姛銆佹湁鏁版嵁杩斿洖涓斿缁堢姸鎬佷负 200锛岄偅浣犲彲浠ョ洿鎺ヨ繑鍥炲疄浣撳璞★紙姣斿 `public Category getCategory(...)` 鑰屼笉鏄?`ResponseEntity`锛夈€係pring 浼氳嚜鍔ㄦ妸杩斿洖浣撴斁鍏ュ搷搴旓紝鐘舵€侀粯璁や负 200銆俒Stack Overflow+1](https://stackoverflow.com/questions/61138943/what-is-responseentity-for-and-why-should-i-keep-it?utm_source=chatgpt.com)
+- 濡傛灉浣犵敤鐨勬槸鍏ㄥ眬寮傚父澶勭悊锛堟瘮濡?ControllerAdvice + ExceptionHandler锛夋潵缁熶竴澶勭悊閿欒鐘舵€佺爜銆侀敊璇秷鎭紝浣犵殑鏂规硶灏卞彲浠ユ洿绠€娲併€傚彧鏈夊湪闇€瑕佲€滅壒娈婄姸鎬佺爜鈥濇垨鈥滃ご閮ㄢ€濇垨鈥滄病鏈夎繑鍥炰綋鈥濈殑鏃跺€欐墠鐢?ResponseEntity銆?
+
+浼樺寲涔嬪悗锛?
 
 ```java
 @RestController
@@ -568,13 +568,13 @@ public Category updateCategory(Category category, Long categoryId) {
 
 [06:36:18](https://www.youtube.com/watch?v=m559BxR30ls&t=23778s) 
 
-映射注解可以在哪些地方使用，有哪些使用场景？
+鏄犲皠娉ㄨВ鍙互鍦ㄥ摢浜涘湴鏂逛娇鐢紝鏈夊摢浜涗娇鐢ㄥ満鏅紵
 
 
-| 位置                   | 说明                                                         |
+| 浣嶇疆                   | 璇存槑                                                         |
 | ---------------------- | ------------------------------------------------------------ |
-| **类（Class）级别**    | 通常用于定义控制器的**基础路径**，所有该类中的请求处理方法都会继承这个路径。 |
-| **方法（Method）级别** | 用于定义具体的请求路径、HTTP 方法、参数等，精确匹配一个请求处理逻辑。 |
+| **绫伙紙Class锛夌骇鍒?*    | 閫氬父鐢ㄤ簬瀹氫箟鎺у埗鍣ㄧ殑**鍩虹璺緞**锛屾墍鏈夎绫讳腑鐨勮姹傚鐞嗘柟娉曢兘浼氱户鎵胯繖涓矾寰勩€?|
+| **鏂规硶锛圡ethod锛夌骇鍒?* | 鐢ㄤ簬瀹氫箟鍏蜂綋鐨勮姹傝矾寰勩€丠TTP 鏂规硶銆佸弬鏁扮瓑锛岀簿纭尮閰嶄竴涓姹傚鐞嗛€昏緫銆?|
 
 
 
@@ -584,7 +584,7 @@ You try it:
 
 ```java
 @RestController
-// 尝试添加新的@RequsetMapping
+// 灏濊瘯娣诲姞鏂扮殑@RequsetMapping
 @RequestMapping
 public class CategoryController {
 
@@ -610,7 +610,7 @@ public class CategoryController {
 
 
 ```java
-//按照原来进行优化
+//鎸夌収鍘熸潵杩涜浼樺寲
 @RequestMapping("/api")
 public class CategoryController {
 
@@ -626,25 +626,25 @@ Basics: Understanding Data & Databases
 
 [06:42:55](https://www.youtube.com/watch?v=m559BxR30ls&t=24175s) 
 
-![image-20251101154131302](构建电商Spring-Boot.assets/image-20251101154131302.png)
+![image-20251101154131302](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101154131302.png)
 
 
 
-![image-20251101154135058](构建电商Spring-Boot.assets/image-20251101154135058.png)
+![image-20251101154135058](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101154135058.png)
 
 
 
-总之，应用程序实现持久化和动态属性，是因为数据库的存在。
+鎬讳箣锛屽簲鐢ㄧ▼搴忓疄鐜版寔涔呭寲鍜屽姩鎬佸睘鎬э紝鏄洜涓烘暟鎹簱鐨勫瓨鍦ㄣ€?
 
-你可以试想一下，如果一个房间，他堆满大量的文件，而你只有一张桌子可以使用，那么此时你再次寻找数据，或者是寻找文件，你不得不把他分类**。数据库就是帮助你管理这些文件或者叫做数据的工具。**
+浣犲彲浠ヨ瘯鎯充竴涓嬶紝濡傛灉涓€涓埧闂达紝浠栧爢婊″ぇ閲忕殑鏂囦欢锛岃€屼綘鍙湁涓€寮犳瀛愬彲浠ヤ娇鐢紝閭ｄ箞姝ゆ椂浣犲啀娆″鎵炬暟鎹紝鎴栬€呮槸瀵绘壘鏂囦欢锛屼綘涓嶅緱涓嶆妸浠栧垎绫?*銆傛暟鎹簱灏辨槸甯姪浣犵鐞嗚繖浜涙枃浠舵垨鑰呭彨鍋氭暟鎹殑宸ュ叿銆?*
 
-![image-20251101154450809](构建电商Spring-Boot.assets/image-20251101154450809.png)
+![image-20251101154450809](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101154450809.png)
 
 
 
-数据库的工作流程如下：
+鏁版嵁搴撶殑宸ヤ綔娴佺▼濡備笅锛?
 
-![image-20251101154520284](构建电商Spring-Boot.assets/image-20251101154520284.png)
+![image-20251101154520284](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101154520284.png)
 
 
 
@@ -654,108 +654,108 @@ Basics: Understanding Data & Databases
 
 [06:43:57](https://www.youtube.com/watch?v=m559BxR30ls&t=24237s) 
 
-**DBMS** 是一套用于**创建、存储、管理、维护和查询数据库**的软件系统。它是用户（或应用程序）与操作系统之间的**中间层**，提供了一套标准化的方式来操作数据。
+**DBMS** 鏄竴濂楃敤浜?*鍒涘缓銆佸瓨鍌ㄣ€佺鐞嗐€佺淮鎶ゅ拰鏌ヨ鏁版嵁搴?*鐨勮蒋浠剁郴缁熴€傚畠鏄敤鎴凤紙鎴栧簲鐢ㄧ▼搴忥級涓庢搷浣滅郴缁熶箣闂寸殑**涓棿灞?*锛屾彁渚涗簡涓€濂楁爣鍑嗗寲鐨勬柟寮忔潵鎿嶄綔鏁版嵁銆?
 
-> 简单说：**DBMS 就是“管数据库的软件”**。
+> 绠€鍗曡锛?*DBMS 灏辨槸鈥滅鏁版嵁搴撶殑杞欢鈥?*銆?
 
-![image-20251101155145755](构建电商Spring-Boot.assets/image-20251101155145755.png)
+![image-20251101155145755](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101155145755.png)
 
 
 
-#### 一、总览对比表
+#### 涓€銆佹€昏瀵规瘮琛?
 
-| 对比维度     | **关系型数据库（SQL）**                | **NoSQL 数据库**                          |
+| 瀵规瘮缁村害     | **鍏崇郴鍨嬫暟鎹簱锛圫QL锛?*                | **NoSQL 鏁版嵁搴?*                          |
 | ------------ | -------------------------------------- | ----------------------------------------- |
-| **全称**     | Relational Database Management System  | Not Only SQL                              |
-| **数据模型** | 表格（Table）、行（Row）、列（Column） | 键值、文档、宽列、图                      |
-| **Schema**   | **固定 Schema**（先定义表结构）        | **动态 Schema**（灵活，无需预定义）       |
-| **查询语言** | SQL（结构化查询语言）                  | 各异（如 CQL、MongoDB Query、Redis 命令） |
-| **事务支持** | 强一致性，**ACID**                     | 多为 **BASE**（最终一致性）               |
-| **扩展方式** | 垂直扩展（升级硬件）                   | 水平扩展（加机器）                        |
-| **数据关系** | 支持外键、JOIN                         | 一般不建议 JOIN，数据冗余设计             |
+| **鍏ㄧО**     | Relational Database Management System  | Not Only SQL                              |
+| **鏁版嵁妯″瀷** | 琛ㄦ牸锛圱able锛夈€佽锛圧ow锛夈€佸垪锛圕olumn锛?| 閿€笺€佹枃妗ｃ€佸鍒椼€佸浘                      |
+| **Schema**   | **鍥哄畾 Schema**锛堝厛瀹氫箟琛ㄧ粨鏋勶級        | **鍔ㄦ€?Schema**锛堢伒娲伙紝鏃犻渶棰勫畾涔夛級       |
+| **鏌ヨ璇█** | SQL锛堢粨鏋勫寲鏌ヨ璇█锛?                 | 鍚勫紓锛堝 CQL銆丮ongoDB Query銆丷edis 鍛戒护锛?|
+| **浜嬪姟鏀寔** | 寮轰竴鑷存€э紝**ACID**                     | 澶氫负 **BASE**锛堟渶缁堜竴鑷存€э級               |
+| **鎵╁睍鏂瑰紡** | 鍨傜洿鎵╁睍锛堝崌绾х‖浠讹級                   | 姘村钩鎵╁睍锛堝姞鏈哄櫒锛?                       |
+| **鏁版嵁鍏崇郴** | 鏀寔澶栭敭銆丣OIN                         | 涓€鑸笉寤鸿 JOIN锛屾暟鎹啑浣欒璁?            |
 
 ------
 
-#### 二、常见系统分类
+#### 浜屻€佸父瑙佺郴缁熷垎绫?
 
-##### **1. 关系型数据库（SQL）**
+##### **1. 鍏崇郴鍨嬫暟鎹簱锛圫QL锛?*
 
-| 数据库         | 特点                           |
+| 鏁版嵁搴?        | 鐗圭偣                           |
 | -------------- | ------------------------------ |
-| **MySQL**      | 开源、社区活跃、适合中小型应用 |
-| **PostgreSQL** | 功能强大、支持 JSON、GIS       |
-| **Oracle**     | 企业级、稳定、昂贵             |
-| **SQL Server** | 微软生态、Windows 集成好       |
-| **SQLite**     | 嵌入式、单文件、无服务器       |
+| **MySQL**      | 寮€婧愩€佺ぞ鍖烘椿璺冦€侀€傚悎涓皬鍨嬪簲鐢?|
+| **PostgreSQL** | 鍔熻兘寮哄ぇ銆佹敮鎸?JSON銆丟IS       |
+| **Oracle**     | 浼佷笟绾с€佺ǔ瀹氥€佹槀璐?            |
+| **SQL Server** | 寰蒋鐢熸€併€乄indows 闆嗘垚濂?      |
+| **SQLite**     | 宓屽叆寮忋€佸崟鏂囦欢銆佹棤鏈嶅姟鍣?      |
 
 ------
 
-##### **2. NoSQL 数据库（按数据模型分）**
+##### **2. NoSQL 鏁版嵁搴擄紙鎸夋暟鎹ā鍨嬪垎锛?*
 
-| 类型                    | 代表数据库            | 典型数据格式           |
+| 绫诲瀷                    | 浠ｈ〃鏁版嵁搴?           | 鍏稿瀷鏁版嵁鏍煎紡           |
 | ----------------------- | --------------------- | ---------------------- |
-| **键值（Key-Value）**   | Redis, Memcached      | { "user:1001": "Tom" } |
-| **文档（Document）**    | MongoDB, CouchDB      | JSON/BSON 文档         |
-| **列族（Wide Column）** | Cassandra, HBase      | 超大宽表，按列存储     |
-| **图（Graph）**         | Neo4j, Amazon Neptune | 节点 + 边（关系）      |
+| **閿€硷紙Key-Value锛?*   | Redis, Memcached      | { "user:1001": "Tom" } |
+| **鏂囨。锛圖ocument锛?*    | MongoDB, CouchDB      | JSON/BSON 鏂囨。         |
+| **鍒楁棌锛圵ide Column锛?* | Cassandra, HBase      | 瓒呭ぇ瀹借〃锛屾寜鍒楀瓨鍌?    |
+| **鍥撅紙Graph锛?*         | Neo4j, Amazon Neptune | 鑺傜偣 + 杈癸紙鍏崇郴锛?     |
 
 ------
 
-#### 三、典型运用场景 & 存储数据
+#### 涓夈€佸吀鍨嬭繍鐢ㄥ満鏅?& 瀛樺偍鏁版嵁
 
-| 场景                      | 推荐数据库           | 存储的数据             | 原因                 |
+| 鍦烘櫙                      | 鎺ㄨ崘鏁版嵁搴?          | 瀛樺偍鐨勬暟鎹?            | 鍘熷洜                 |
 | ------------------------- | -------------------- | ---------------------- | -------------------- |
-| **用户登录、权限管理**    | MySQL / PostgreSQL   | 用户表、角色表、权限表 | 需要事务、强一致性   |
-| **电商订单、库存**        | MySQL + Redis        | 订单、商品、库存快照   | 事务 + 高并发读写    |
-| **日志、时序数据**        | Cassandra / InfluxDB | 日志行、时间戳 + 值    | 海量写、低延迟       |
-| **缓存、会话（Session）** | Redis                | Key-Value              | 超高性能、内存存储   |
-| **内容管理、博客、CMS**   | MongoDB              | 文章 JSON、评论嵌套    | 结构灵活，易扩展字段 |
-| **社交关系、推荐系统**    | Neo4j                | 用户-关注-用户         | 图遍历效率高         |
-| **实时排行榜、计数器**    | Redis (Sorted Set)   | 用户ID + 分数          | ZINCRBY 原子操作     |
-| **移动端离线数据**        | SQLite               | 本地用户设置、缓存     | 轻量、嵌入式         |
+| **鐢ㄦ埛鐧诲綍銆佹潈闄愮鐞?*    | MySQL / PostgreSQL   | 鐢ㄦ埛琛ㄣ€佽鑹茶〃銆佹潈闄愯〃 | 闇€瑕佷簨鍔°€佸己涓€鑷存€?  |
+| **鐢靛晢璁㈠崟銆佸簱瀛?*        | MySQL + Redis        | 璁㈠崟銆佸晢鍝併€佸簱瀛樺揩鐓?  | 浜嬪姟 + 楂樺苟鍙戣鍐?   |
+| **鏃ュ織銆佹椂搴忔暟鎹?*        | Cassandra / InfluxDB | 鏃ュ織琛屻€佹椂闂存埑 + 鍊?   | 娴烽噺鍐欍€佷綆寤惰繜       |
+| **缂撳瓨銆佷細璇濓紙Session锛?* | Redis                | Key-Value              | 瓒呴珮鎬ц兘銆佸唴瀛樺瓨鍌?  |
+| **鍐呭绠＄悊銆佸崥瀹€丆MS**   | MongoDB              | 鏂囩珷 JSON銆佽瘎璁哄祵濂?   | 缁撴瀯鐏垫椿锛屾槗鎵╁睍瀛楁 |
+| **绀句氦鍏崇郴銆佹帹鑽愮郴缁?*    | Neo4j                | 鐢ㄦ埛-鍏虫敞-鐢ㄦ埛         | 鍥鹃亶鍘嗘晥鐜囬珮         |
+| **瀹炴椂鎺掕姒溿€佽鏁板櫒**    | Redis (Sorted Set)   | 鐢ㄦ埛ID + 鍒嗘暟          | ZINCRBY 鍘熷瓙鎿嶄綔     |
+| **绉诲姩绔绾挎暟鎹?*        | SQLite               | 鏈湴鐢ㄦ埛璁剧疆銆佺紦瀛?    | 杞婚噺銆佸祵鍏ュ紡         |
 
 ------
 
-#### 四、什么时候选 SQL？什么时候选 NoSQL？
+#### 鍥涖€佷粈涔堟椂鍊欓€?SQL锛熶粈涔堟椂鍊欓€?NoSQL锛?
 
-| 选择 SQL（关系型）                  | 选择 NoSQL                         |
+| 閫夋嫨 SQL锛堝叧绯诲瀷锛?                 | 閫夋嫨 NoSQL                         |
 | ----------------------------------- | ---------------------------------- |
-| 数据结构**固定**（如订单、用户）    | 数据结构**频繁变化**（如产品属性） |
-| 需要**复杂查询**（多表 JOIN、统计） | 查询简单，主要**按 ID 查**         |
-| 强调**事务一致性**（转账不能错）    | 接受**最终一致性**（日志可稍晚）   |
-| 数据量**中等**（百万级）            | 数据量**超大**（百亿级）           |
-| 业务逻辑复杂，报表多                | 高并发写，读模式简单               |
+| 鏁版嵁缁撴瀯**鍥哄畾**锛堝璁㈠崟銆佺敤鎴凤級    | 鏁版嵁缁撴瀯**棰戠箒鍙樺寲**锛堝浜у搧灞炴€э級 |
+| 闇€瑕?*澶嶆潅鏌ヨ**锛堝琛?JOIN銆佺粺璁★級 | 鏌ヨ绠€鍗曪紝涓昏**鎸?ID 鏌?*         |
+| 寮鸿皟**浜嬪姟涓€鑷存€?*锛堣浆璐︿笉鑳介敊锛?   | 鎺ュ彈**鏈€缁堜竴鑷存€?*锛堟棩蹇楀彲绋嶆櫄锛?  |
+| 鏁版嵁閲?*涓瓑**锛堢櫨涓囩骇锛?           | 鏁版嵁閲?*瓒呭ぇ**锛堢櫨浜跨骇锛?          |
+| 涓氬姟閫昏緫澶嶆潅锛屾姤琛ㄥ                | 楂樺苟鍙戝啓锛岃妯″紡绠€鍗?              |
 
 ------
 
-#### 五、优缺点总结
+#### 浜斻€佷紭缂虹偣鎬荤粨
 
-| 类型      | 优点                                            | 缺点                                       |
+| 绫诲瀷      | 浼樼偣                                            | 缂虹偣                                       |
 | --------- | ----------------------------------------------- | ------------------------------------------ |
-| **SQL**   | - 成熟标准（SQL） - 强事务（ACID） - 复杂查询强 | - 扩展性差（难水平扩展） - Schema 变更麻烦 |
-| **NoSQL** | - 水平扩展容易 - 灵活性高 - 高并发写            | - 无统一查询语言 - 事务弱 - 学习成本高     |
+| **SQL**   | - 鎴愮啛鏍囧噯锛圫QL锛?- 寮轰簨鍔★紙ACID锛?- 澶嶆潅鏌ヨ寮?| - 鎵╁睍鎬у樊锛堥毦姘村钩鎵╁睍锛?- Schema 鍙樻洿楹荤儲 |
+| **NoSQL** | - 姘村钩鎵╁睍瀹规槗 - 鐏垫椿鎬ч珮 - 楂樺苟鍙戝啓            | - 鏃犵粺涓€鏌ヨ璇█ - 浜嬪姟寮?- 瀛︿範鎴愭湰楂?    |
 
 
 
-实际生产最常用的是：
+瀹為檯鐢熶骇鏈€甯哥敤鐨勬槸锛?
 
 ```
-后端：MySQL（主数据） + Redis（缓存） + MongoDB（日志/内容） + Elasticsearch（搜索）
+鍚庣锛歁ySQL锛堜富鏁版嵁锛?+ Redis锛堢紦瀛橈級 + MongoDB锛堟棩蹇?鍐呭锛?+ Elasticsearch锛堟悳绱級
 ```
 
 
 
 
 
-### “组织形式”是关键？
+### 鈥滅粍缁囧舰寮忊€濇槸鍏抽敭锛?
 
-1. **MySQL → SQL Server（同构迁移）**：
+1. **MySQL 鈫?SQL Server锛堝悓鏋勮縼绉伙級**锛?
 
-   - **数据组织类似**：都用表存储，迁移主要是“翻译”差异。
-   - **工具友好**：SSMA、DBConvert 等自动转换 Schema 和数据。
-   - **痛点**：外键需手动调整，性能调优。
+   - **鏁版嵁缁勭粐绫讳技**锛氶兘鐢ㄨ〃瀛樺偍锛岃縼绉讳富瑕佹槸鈥滅炕璇戔€濆樊寮傘€?
+   - **宸ュ叿鍙嬪ソ**锛歋SMA銆丏BConvert 绛夎嚜鍔ㄨ浆鎹?Schema 鍜屾暟鎹€?
+   - **鐥涚偣**锛氬閿渶鎵嬪姩璋冩暣锛屾€ц兘璋冧紭銆?
 
-   **示例**：
+   **绀轰緥**锛?
 
    sql
 
@@ -763,24 +763,24 @@ Basics: Understanding Data & Databases
    -- MySQL
    CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR(50));
    
-   -- SQL Server（类似，但类型微调）
+   -- SQL Server锛堢被浼硷紝浣嗙被鍨嬪井璋冿級
    CREATE TABLE users (id INT PRIMARY KEY, name NVARCHAR(50));
    ```
 
-2. **MySQL → MongoDB（异构迁移）**：
+2. **MySQL 鈫?MongoDB锛堝紓鏋勮縼绉伙級**锛?
 
-   - **组织形式天差地别**：多表 JOIN → 单文档嵌套；固定 Schema → 动态文档。
-   - **需重设计**：规范化数据变“反规范化”（冗余存储以加速读）。
-   - **应用重构**：SQL 查询 → Mongo 查询；ORM（如 Hibernate） → ODM（如 Mongoose）。
+   - **缁勭粐褰㈠紡澶╁樊鍦板埆**锛氬琛?JOIN 鈫?鍗曟枃妗ｅ祵濂楋紱鍥哄畾 Schema 鈫?鍔ㄦ€佹枃妗ｃ€?
+   - **闇€閲嶈璁?*锛氳鑼冨寲鏁版嵁鍙樷€滃弽瑙勮寖鍖栤€濓紙鍐椾綑瀛樺偍浠ュ姞閫熻锛夈€?
+   - **搴旂敤閲嶆瀯**锛歋QL 鏌ヨ 鈫?Mongo 鏌ヨ锛汷RM锛堝 Hibernate锛?鈫?ODM锛堝 Mongoose锛夈€?
 
 
 
-可能需要是数据库迁移工具的帮助：
+鍙兘闇€瑕佹槸鏁版嵁搴撹縼绉诲伐鍏风殑甯姪锛?
 
-| 路径                   | 工具                                                         | 免费？   |
+| 璺緞                   | 宸ュ叿                                                         | 鍏嶈垂锛?  |
 | ---------------------- | ------------------------------------------------------------ | -------- |
-| **MySQL → SQL Server** | SSMA、DBConvert、Skyvia                                      | 部分免费 |
-| **MySQL → MongoDB**    | MongoDB Relational Migrator、Tapdata、Python 脚本（pymongo + mysql.connector） | 大多免费 |
+| **MySQL 鈫?SQL Server** | SSMA銆丏BConvert銆丼kyvia                                      | 閮ㄥ垎鍏嶈垂 |
+| **MySQL 鈫?MongoDB**    | MongoDB Relational Migrator銆乀apdata銆丳ython 鑴氭湰锛坧ymongo + mysql.connector锛?| 澶у鍏嶈垂 |
 
 
 
@@ -788,51 +788,51 @@ Basics: Understanding Data & Databases
 
 
 
-### JPA 和 H2
+### JPA 鍜?H2
 
 
 
-添加完成相关依赖后，通过更改配置文件：
+娣诲姞瀹屾垚鐩稿叧渚濊禆鍚庯紝閫氳繃鏇存敼閰嶇疆鏂囦欢锛?
 
 ```
 spring.h2.console.enabled=true
 ```
 
-成功运行程序后：
+鎴愬姛杩愯绋嬪簭鍚庯細
 
 ```
 http://localhost:8080/h2-console
 ```
 
-输入后你可以得到：
+杈撳叆鍚庝綘鍙互寰楀埌锛?
 
-![image-20251101173923808](构建电商Spring-Boot.assets/image-20251101173923808.png)
+![image-20251101173923808](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101173923808.png)
 
-JDBC URL 就是当你添加H2依赖运行后的程序（一般写在日志里面）：
+JDBC URL 灏辨槸褰撲綘娣诲姞H2渚濊禆杩愯鍚庣殑绋嬪簭锛堜竴鑸啓鍦ㄦ棩蹇楅噷闈級锛?
 
-![image-20251101174104298](构建电商Spring-Boot.assets/image-20251101174104298.png)
+![image-20251101174104298](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101174104298.png)
 
 
 
-![image-20251101174141929](构建电商Spring-Boot.assets/image-20251101174141929.png)
+![image-20251101174141929](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101174141929.png)
 
-填入后直接链接即可使用：
+濉叆鍚庣洿鎺ラ摼鎺ュ嵆鍙娇鐢細
 
-但是这样每次重新启用服务是不确定的`url`的，因为他是动态生成。
+浣嗘槸杩欐牱姣忔閲嶆柊鍚敤鏈嶅姟鏄笉纭畾鐨刞url`鐨勶紝鍥犱负浠栨槸鍔ㄦ€佺敓鎴愩€?
 
-这时要加入相关配置：就可以自定义路径
+杩欐椂瑕佸姞鍏ョ浉鍏抽厤缃細灏卞彲浠ヨ嚜瀹氫箟璺緞
 
 ```
 spring.datasource.url=jdbc:h2:men:test
 ```
 
-![image-20251101174617127](构建电商Spring-Boot.assets/image-20251101174617127.png)
+![image-20251101174617127](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101174617127.png)
 
-发现路径被修改
+鍙戠幇璺緞琚慨鏀?
 
-成功链接:
+鎴愬姛閾炬帴:
 
-![image-20251101174810368](构建电商Spring-Boot.assets/image-20251101174810368.png)
+![image-20251101174810368](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101174810368.png)
 
 
 
@@ -844,66 +844,66 @@ spring.datasource.url=jdbc:h2:men:test
 
 [08:22:41](https://www.youtube.com/watch?v=m559BxR30ls&t=30161s) 
 
-核心问题：实体究竟是什么？在JPA下，实体代表什么？
+鏍稿績闂锛氬疄浣撶┒绔熸槸浠€涔堬紵鍦↗PA涓嬶紝瀹炰綋浠ｈ〃浠€涔堬紵
 
-**实体 = 一条数据库记录的 Java 对象表示**
+**瀹炰綋 = 涓€鏉℃暟鎹簱璁板綍鐨?Java 瀵硅薄琛ㄧず**
 
-具体说明：实体代表：
+鍏蜂綋璇存槑锛氬疄浣撲唬琛細
 
-| 层面           | 代表的内容                                              |
+| 灞傞潰           | 浠ｈ〃鐨勫唴瀹?                                             |
 | -------------- | ------------------------------------------------------- |
-| **数据库层面** | **一张表中的一行记录（Row）**                           |
-| **Java 层面**  | **一个带有 `@Entity` 注解的普通 Java 类（POJO）的实例** |
-| **ORM 映射**   | **对象 ↔ 关系表** 的桥梁                                |
+| **鏁版嵁搴撳眰闈?* | **涓€寮犺〃涓殑涓€琛岃褰曪紙Row锛?*                           |
+| **Java 灞傞潰**  | **涓€涓甫鏈?`@Entity` 娉ㄨВ鐨勬櫘閫?Java 绫伙紙POJO锛夌殑瀹炰緥** |
+| **ORM 鏄犲皠**   | **瀵硅薄 鈫?鍏崇郴琛?* 鐨勬ˉ姊?                               |
 
 
 
-#### JPA的生命周期：
+#### JPA鐨勭敓鍛藉懆鏈燂細
 
-JPA 会跟踪实体的状态，决定如何与数据库交互：
+JPA 浼氳窡韪疄浣撶殑鐘舵€侊紝鍐冲畾濡備綍涓庢暟鎹簱浜や簰锛?
 
-| 状态                       | 含义                          | 说明                                       |
+| 鐘舵€?                      | 鍚箟                          | 璇存槑                                       |
 | -------------------------- | ----------------------------- | ------------------------------------------ |
-| **New（新建）**            | 对象刚 new 出来，还没持久化   | entityManager.persist(user) 后才进入持久化 |
-| **Managed（托管/持久化）** | 已被 EntityManager 管理       | 修改属性会自动同步到 DB（脏检查）          |
-| **Detached（游离）**       | 曾经持久化过，但当前会话结束  | 需要 merge() 重新关联                      |
-| **Removed（已删除）**      | 调用了 remove()，等待提交删除 | 事务提交时执行 DELETE                      |
+| **New锛堟柊寤猴級**            | 瀵硅薄鍒?new 鍑烘潵锛岃繕娌℃寔涔呭寲   | entityManager.persist(user) 鍚庢墠杩涘叆鎸佷箙鍖?|
+| **Managed锛堟墭绠?鎸佷箙鍖栵級** | 宸茶 EntityManager 绠＄悊       | 淇敼灞炴€т細鑷姩鍚屾鍒?DB锛堣剰妫€鏌ワ級          |
+| **Detached锛堟父绂伙級**       | 鏇剧粡鎸佷箙鍖栬繃锛屼絾褰撳墠浼氳瘽缁撴潫  | 闇€瑕?merge() 閲嶆柊鍏宠仈                      |
+| **Removed锛堝凡鍒犻櫎锛?*      | 璋冪敤浜?remove()锛岀瓑寰呮彁浜ゅ垹闄?| 浜嬪姟鎻愪氦鏃舵墽琛?DELETE                      |
 
 
 
-#### JPA的使用要求：
+#### JPA鐨勪娇鐢ㄨ姹傦細
 
-| 要求                                | 说明                             |
+| 瑕佹眰                                | 璇存槑                             |
 | ----------------------------------- | -------------------------------- |
-| 1. 使用 `@Entity` 注解              | 标记为实体                       |
-| 2. 有 `@Id` 字段                    | 必须有主键                       |
-| 3. 有无参构造器                     | 反射创建实例（`protected` 也行） |
-| 4. 不是 `final` 类                  | 否则无法代理（延迟加载需要）     |
-| 5. 字段是 `private` + getter/setter | JPA 通过方法访问                 |
+| 1. 浣跨敤 `@Entity` 娉ㄨВ              | 鏍囪涓哄疄浣?                      |
+| 2. 鏈?`@Id` 瀛楁                    | 蹇呴』鏈変富閿?                      |
+| 3. 鏈夋棤鍙傛瀯閫犲櫒                     | 鍙嶅皠鍒涘缓瀹炰緥锛坄protected` 涔熻锛?|
+| 4. 涓嶆槸 `final` 绫?                 | 鍚﹀垯鏃犳硶浠ｇ悊锛堝欢杩熷姞杞介渶瑕侊級     |
+| 5. 瀛楁鏄?`private` + getter/setter | JPA 閫氳繃鏂规硶璁块棶                 |
 
 
 
-实际案例：
+瀹為檯妗堜緥锛?
 
-![image-20251101181312470](构建电商Spring-Boot.assets/image-20251101181312470.png)
+![image-20251101181312470](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101181312470.png)
 
-这里我通过两个注解`@Entity`和`@Id`,将`categoryId`这个私有变量被标记成数据库的主键，作为唯一标识
+杩欓噷鎴戦€氳繃涓や釜娉ㄨВ`@Entity`鍜宍@Id`,灏哷categoryId`杩欎釜绉佹湁鍙橀噺琚爣璁版垚鏁版嵁搴撶殑涓婚敭锛屼綔涓哄敮涓€鏍囪瘑
 
-此时我们再次访问H2
+姝ゆ椂鎴戜滑鍐嶆璁块棶H2
 
-![image-20251101181539829](构建电商Spring-Boot.assets/image-20251101181539829.png)
+![image-20251101181539829](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101181539829.png)
 
-#### 自动建表的原因：
+#### 鑷姩寤鸿〃鐨勫師鍥狅細
 
-| 原因                                             | 说明                                                |
+| 鍘熷洜                                             | 璇存槑                                                |
 | ------------------------------------------------ | --------------------------------------------------- |
-| 1. 你用的是 **H2 内存数据库**（常见于测试/开发） | 默认配置会开启自动建表                              |
-| 2. 你 **没有显式设置 `ddl-auto=none`**           | Spring Boot **默认值是 `create-drop`**（H2 特例！） |
-| 3. 你加了 `@Entity` 和 `@Id`                     | 满足 JPA 实体最低要求，Hibernate 就能识别           |
+| 1. 浣犵敤鐨勬槸 **H2 鍐呭瓨鏁版嵁搴?*锛堝父瑙佷簬娴嬭瘯/寮€鍙戯級 | 榛樿閰嶇疆浼氬紑鍚嚜鍔ㄥ缓琛?                             |
+| 2. 浣?**娌℃湁鏄惧紡璁剧疆 `ddl-auto=none`**           | Spring Boot **榛樿鍊兼槸 `create-drop`**锛圚2 鐗逛緥锛侊級 |
+| 3. 浣犲姞浜?`@Entity` 鍜?`@Id`                     | 婊¤冻 JPA 瀹炰綋鏈€浣庤姹傦紝Hibernate 灏辫兘璇嗗埆           |
 
-也可以通过直接在实体`@Entity`注解后添加，实现修改表名：
+涔熷彲浠ラ€氳繃鐩存帴鍦ㄥ疄浣揱@Entity`娉ㄨВ鍚庢坊鍔狅紝瀹炵幇淇敼琛ㄥ悕锛?
 
-<img src="构建电商Spring-Boot.assets/image-20251101182216613.png" alt="image-20251101182216613" style="zoom:50%;" />
+<img src="鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101182216613.png" alt="image-20251101182216613" style="zoom:50%;" />
 
 
 
@@ -911,9 +911,9 @@ JPA 会跟踪实体的状态，决定如何与数据库交互：
 
 [08:29:23](https://www.youtube.com/watch?v=m559BxR30ls&t=30563s)
 
-#### 如果进行一些行为配置：
+#### 濡傛灉杩涜涓€浜涜涓洪厤缃細
 
-我们就可以看到`JPA`自动数据库建表等操作
+鎴戜滑灏卞彲浠ョ湅鍒癭JPA`鑷姩鏁版嵁搴撳缓琛ㄧ瓑鎿嶄綔
 
 ```properties
 spring.jpa.show-sql=true
@@ -923,54 +923,54 @@ spring.jpa.hibernate.ddl-auto=none
 
 
 
-**spring.jpa.show-sql=true 运行后，对原本系统行为的** **唯一改变** **是：**
+**spring.jpa.show-sql=true 杩愯鍚庯紝瀵瑰師鏈郴缁熻涓虹殑** **鍞竴鏀瑰彉** **鏄細**
 
-> **在控制台（或日志文件）额外打印出 Hibernate 发出的所有 SQL 语句（不含参数值）**。
+> **鍦ㄦ帶鍒跺彴锛堟垨鏃ュ織鏂囦欢锛夐澶栨墦鍗板嚭 Hibernate 鍙戝嚭鐨勬墍鏈?SQL 璇彞锛堜笉鍚弬鏁板€硷級**銆?
 
-<img src="构建电商Spring-Boot.assets/image-20251101183324067.png" alt="image-20251101183324067" style="zoom:50%;" />
+<img src="鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101183324067.png" alt="image-20251101183324067" style="zoom:50%;" />
 
 **spring.jpa.properties.hibernate.format_sql=true**
 
-> **将 show-sql=true 打印出来的 SQL 语句进行“美化格式化”（换行 + 缩进），让复杂 SQL 更易读。**
+> **灏?show-sql=true 鎵撳嵃鍑烘潵鐨?SQL 璇彞杩涜鈥滅編鍖栨牸寮忓寲鈥濓紙鎹㈣ + 缂╄繘锛夛紝璁╁鏉?SQL 鏇存槗璇汇€?*
 
 
 
 **spring.jpa.hibernate.ddl-auto=none**
 
-| 配置            | 价值                                        |
+| 閰嶇疆            | 浠峰€?                                       |
 | --------------- | ------------------------------------------- |
-| show-sql=true   | **开发调试神器**：一眼看穿 JPA 发了什么 SQL |
-| format_sql=true | **提升可读性**：复杂查询不乱                |
-| ddl-auto=none   | **生产安全锁**：杜绝意外改表                |
+| show-sql=true   | **寮€鍙戣皟璇曠鍣?*锛氫竴鐪肩湅绌?JPA 鍙戜簡浠€涔?SQL |
+| format_sql=true | **鎻愬崌鍙鎬?*锛氬鏉傛煡璇笉涔?               |
+| ddl-auto=none   | **鐢熶骇瀹夊叏閿?*锛氭潨缁濇剰澶栨敼琛?               |
 
-> **一句话总结**： **“只看 SQL，不改表” —— 开发透明，生产安全。**
+> **涓€鍙ヨ瘽鎬荤粨**锛?**鈥滃彧鐪?SQL锛屼笉鏀硅〃鈥?鈥斺€?寮€鍙戦€忔槑锛岀敓浜у畨鍏ㄣ€?*
 
-<img src="构建电商Spring-Boot.assets/image-20251101182700735.png" alt="image-20251101182700735" style="zoom:50%;" />
+<img src="鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101182700735.png" alt="image-20251101182700735" style="zoom:50%;" />
 
-一般取值表:
+涓€鑸彇鍊艰〃:
 
-| 取值          | 作用                               | 是否建表/改表  | 适用场景              |
+| 鍙栧€?         | 浣滅敤                               | 鏄惁寤鸿〃/鏀硅〃  | 閫傜敤鍦烘櫙              |
 | ------------- | ---------------------------------- | -------------- | --------------------- |
-| `create`      | **删旧表 → 重建表**                | 是（全删全建） | 单元测试、快速原型    |
-| `create-drop` | **启动建表，关闭删表**             | 是（临时表）   | 集成测试（H2 内存库） |
-| `update`      | **根据实体同步表结构，不删数据**   | 是（增量改）   | 本地开发              |
-| `validate`    | **校验实体与表结构一致性，不改表** | 否             | 预生产验证            |
-| `none`        | **什么都不做**                     | 否             | 生产环境（默认）      |
+| `create`      | **鍒犳棫琛?鈫?閲嶅缓琛?*                | 鏄紙鍏ㄥ垹鍏ㄥ缓锛?| 鍗曞厓娴嬭瘯銆佸揩閫熷師鍨?   |
+| `create-drop` | **鍚姩寤鸿〃锛屽叧闂垹琛?*             | 鏄紙涓存椂琛級   | 闆嗘垚娴嬭瘯锛圚2 鍐呭瓨搴擄級 |
+| `update`      | **鏍规嵁瀹炰綋鍚屾琛ㄧ粨鏋勶紝涓嶅垹鏁版嵁**   | 鏄紙澧為噺鏀癸級   | 鏈湴寮€鍙?             |
+| `validate`    | **鏍￠獙瀹炰綋涓庤〃缁撴瀯涓€鑷存€э紝涓嶆敼琛?* | 鍚?            | 棰勭敓浜ч獙璇?           |
+| `none`        | **浠€涔堥兘涓嶅仛**                     | 鍚?            | 鐢熶骇鐜锛堥粯璁わ級      |
 
-上述操作均属于：DDL
+涓婅堪鎿嶄綔鍧囧睘浜庯細DDL
 
 
 
-#### DDL和DML的区别：
+#### DDL鍜孌ML鐨勫尯鍒細
 
-| 维度                             | `spring.jpa.hibernate.ddl-auto`               | **数据库事务（@Transactional）**                 |
+| 缁村害                             | `spring.jpa.hibernate.ddl-auto`               | **鏁版嵁搴撲簨鍔★紙@Transactional锛?*                 |
 | -------------------------------- | --------------------------------------------- | ------------------------------------------------ |
-| **操作类型**                     | **DDL**（定义语言） `CREATE`, `ALTER`, `DROP` | **DML**（操作语言） `INSERT`, `UPDATE`, `DELETE` |
-| **作用对象**                     | **表结构**（Schema）                          | **表数据**（Data）                               |
-| **是否可回滚**                   | **不可回滚**（DDL 自动提交）                  | **可回滚**（事务失败可撤销）                     |
-| **执行时机**                     | **应用启动时**（一次性）                      | **方法运行时**（每次调用）                       |
-| **是否受 `@Transactional` 控制** | **不受**                                      | **受**                                           |
-| **是否影响业务逻辑**             | **不影响**（只管结构）                        | **直接影响**（增删改查）                         |
+| **鎿嶄綔绫诲瀷**                     | **DDL**锛堝畾涔夎瑷€锛?`CREATE`, `ALTER`, `DROP` | **DML**锛堟搷浣滆瑷€锛?`INSERT`, `UPDATE`, `DELETE` |
+| **浣滅敤瀵硅薄**                     | **琛ㄧ粨鏋?*锛圫chema锛?                         | **琛ㄦ暟鎹?*锛圖ata锛?                              |
+| **鏄惁鍙洖婊?*                   | **涓嶅彲鍥炴粴**锛圖DL 鑷姩鎻愪氦锛?                 | **鍙洖婊?*锛堜簨鍔″け璐ュ彲鎾ら攢锛?                    |
+| **鎵ц鏃舵満**                     | **搴旂敤鍚姩鏃?*锛堜竴娆℃€э級                      | **鏂规硶杩愯鏃?*锛堟瘡娆¤皟鐢級                       |
+| **鏄惁鍙?`@Transactional` 鎺у埗** | **涓嶅彈**                                      | **鍙?*                                           |
+| **鏄惁褰卞搷涓氬姟閫昏緫**             | **涓嶅奖鍝?*锛堝彧绠＄粨鏋勶級                        | **鐩存帴褰卞搷**锛堝鍒犳敼鏌ワ級                         |
 
 
 
@@ -984,33 +984,33 @@ spring.jpa.hibernate.ddl-auto=none
 @GeneratedValue(strategy = GenerationType.)
 ```
 
-| 策略 (GenerationType) | 说明                                                         | 常见数据库支持                                               | 优点                                                         | 注意事项／适用场景                                           |
+| 绛栫暐 (GenerationType) | 璇存槑                                                         | 甯歌鏁版嵁搴撴敮鎸?                                              | 浼樼偣                                                         | 娉ㄦ剰浜嬮」锛忛€傜敤鍦烘櫙                                           |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `AUTO`                | 让 JPA 提供者（如 Hibernate）自动选择最合适的主键生成策略。 ([Baeldung on Kotlin](https://www.baeldung.com/hibernate-identifiers?utm_source=chatgpt.com)) | 几乎所有，但具体行为依赖数据库 + JPA 实现。                  | 配置简单，适合数据库切换或不想关心细节的场景。               | 可能造成在不同数据库下行为不一致（例如从 MySQL 转 PostgreSQL 时策略变了）。 ([Stackademic](https://stackademic.com/blog/avoid-using-generationtype-auto-strategy-for-id-generation-in-spring-boot?utm_source=chatgpt.com)) |
-| `IDENTITY`            | 使用数据库的“自动增长／自增列”（如 MySQL 的 AUTO_INCREMENT、SQL Server 的 IDENTITY）来生成主键。 ([Stack Overflow](https://stackoverflow.com/questions/33096466/generationtype-auto-vs-generationtype-identity-in-hibernate?utm_source=chatgpt.com)) | MySQL、SQL Server、PostgreSQL（部分支持）、Oracle 12c 以后支持 IDENTITY 列。 ([tutorialspoint.com](https://www.tutorialspoint.com/difference-between-sequence-and-identity-in-hibernate?utm_source=chatgpt.com)) | 配置最简单；插入操作数据库即可生成主键。                     | 不支持批量插入优化（batch insert）／JPA 对延迟获取 ID 限制。若大量插入、高性能场景可能不是最佳。 ([vladmihalcea.com](https://vladmihalcea.com/hibernate-identity-sequence-and-table-sequence-generator/?utm_source=chatgpt.com)) |
-| `SEQUENCE`            | 使用数据库的“序列对象”（Sequence）生成主键值，例如 Oracle、PostgreSQL 的 sequence。 ([Stack Overflow](https://stackoverflow.com/questions/8955074/generatedvaluestrategy-identity-vs-generatedvaluestrategy-sequence?utm_source=chatgpt.com)) | Oracle、PostgreSQL、DB2 等支持序列。 MySQL 普通版本不支持原生序列。 ([Stack Overflow](https://stackoverflow.com/questions/33096466/generationtype-auto-vs-generationtype-identity-in-hibernate?utm_source=chatgpt.com)) | 性能较好，支持批量插入、JPA 优化；灵活可配置。 ([Thorben Janssen](https://thorben-janssen.com/jpa-generate-primary-keys/?utm_source=chatgpt.com)) | 若数据库**不支持**序列（如旧版 MySQL）需额外配置或回退策略。需定义 `@SequenceGenerator` 等。 |
-| `TABLE`               | 使用一个专门的数据库表来模拟主键生成（即自己维护一个“计数器”表）。 ([vladmihalcea.com](https://vladmihalcea.com/hibernate-identity-sequence-and-table-sequence-generator/?utm_source=chatgpt.com)) | 所有数据库都能支持（因为只是一个普通表），但性能较差。       | 最具可移植性（在所有数据库上都能工作）。                     | 性能最弱：每次生成 ID 都可能访问计数器表、并发性能差。一般只有在其他策略不可用时才考虑。 ([vladmihalcea.com](https://vladmihalcea.com/why-you-should-never-use-the-table-identifier-generator-with-jpa-and-hibernate/?utm_source=chatgpt.com)) |
+| `AUTO`                | 璁?JPA 鎻愪緵鑰咃紙濡?Hibernate锛夎嚜鍔ㄩ€夋嫨鏈€鍚堥€傜殑涓婚敭鐢熸垚绛栫暐銆?([Baeldung on Kotlin](https://www.baeldung.com/hibernate-identifiers?utm_source=chatgpt.com)) | 鍑犱箮鎵€鏈夛紝浣嗗叿浣撹涓轰緷璧栨暟鎹簱 + JPA 瀹炵幇銆?                 | 閰嶇疆绠€鍗曪紝閫傚悎鏁版嵁搴撳垏鎹㈡垨涓嶆兂鍏冲績缁嗚妭鐨勫満鏅€?              | 鍙兘閫犳垚鍦ㄤ笉鍚屾暟鎹簱涓嬭涓轰笉涓€鑷达紙渚嬪浠?MySQL 杞?PostgreSQL 鏃剁瓥鐣ュ彉浜嗭級銆?([Stackademic](https://stackademic.com/blog/avoid-using-generationtype-auto-strategy-for-id-generation-in-spring-boot?utm_source=chatgpt.com)) |
+| `IDENTITY`            | 浣跨敤鏁版嵁搴撶殑鈥滆嚜鍔ㄥ闀匡紡鑷鍒椻€濓紙濡?MySQL 鐨?AUTO_INCREMENT銆丼QL Server 鐨?IDENTITY锛夋潵鐢熸垚涓婚敭銆?([Stack Overflow](https://stackoverflow.com/questions/33096466/generationtype-auto-vs-generationtype-identity-in-hibernate?utm_source=chatgpt.com)) | MySQL銆丼QL Server銆丳ostgreSQL锛堥儴鍒嗘敮鎸侊級銆丱racle 12c 浠ュ悗鏀寔 IDENTITY 鍒椼€?([tutorialspoint.com](https://www.tutorialspoint.com/difference-between-sequence-and-identity-in-hibernate?utm_source=chatgpt.com)) | 閰嶇疆鏈€绠€鍗曪紱鎻掑叆鎿嶄綔鏁版嵁搴撳嵆鍙敓鎴愪富閿€?                    | 涓嶆敮鎸佹壒閲忔彃鍏ヤ紭鍖栵紙batch insert锛夛紡JPA 瀵瑰欢杩熻幏鍙?ID 闄愬埗銆傝嫢澶ч噺鎻掑叆銆侀珮鎬ц兘鍦烘櫙鍙兘涓嶆槸鏈€浣炽€?([vladmihalcea.com](https://vladmihalcea.com/hibernate-identity-sequence-and-table-sequence-generator/?utm_source=chatgpt.com)) |
+| `SEQUENCE`            | 浣跨敤鏁版嵁搴撶殑鈥滃簭鍒楀璞♀€濓紙Sequence锛夌敓鎴愪富閿€硷紝渚嬪 Oracle銆丳ostgreSQL 鐨?sequence銆?([Stack Overflow](https://stackoverflow.com/questions/8955074/generatedvaluestrategy-identity-vs-generatedvaluestrategy-sequence?utm_source=chatgpt.com)) | Oracle銆丳ostgreSQL銆丏B2 绛夋敮鎸佸簭鍒椼€?MySQL 鏅€氱増鏈笉鏀寔鍘熺敓搴忓垪銆?([Stack Overflow](https://stackoverflow.com/questions/33096466/generationtype-auto-vs-generationtype-identity-in-hibernate?utm_source=chatgpt.com)) | 鎬ц兘杈冨ソ锛屾敮鎸佹壒閲忔彃鍏ャ€丣PA 浼樺寲锛涚伒娲诲彲閰嶇疆銆?([Thorben Janssen](https://thorben-janssen.com/jpa-generate-primary-keys/?utm_source=chatgpt.com)) | 鑻ユ暟鎹簱**涓嶆敮鎸?*搴忓垪锛堝鏃х増 MySQL锛夐渶棰濆閰嶇疆鎴栧洖閫€绛栫暐銆傞渶瀹氫箟 `@SequenceGenerator` 绛夈€?|
+| `TABLE`               | 浣跨敤涓€涓笓闂ㄧ殑鏁版嵁搴撹〃鏉ユā鎷熶富閿敓鎴愶紙鍗宠嚜宸辩淮鎶や竴涓€滆鏁板櫒鈥濊〃锛夈€?([vladmihalcea.com](https://vladmihalcea.com/hibernate-identity-sequence-and-table-sequence-generator/?utm_source=chatgpt.com)) | 鎵€鏈夋暟鎹簱閮借兘鏀寔锛堝洜涓哄彧鏄竴涓櫘閫氳〃锛夛紝浣嗘€ц兘杈冨樊銆?      | 鏈€鍏峰彲绉绘鎬э紙鍦ㄦ墍鏈夋暟鎹簱涓婇兘鑳藉伐浣滐級銆?                    | 鎬ц兘鏈€寮憋細姣忔鐢熸垚 ID 閮藉彲鑳借闂鏁板櫒琛ㄣ€佸苟鍙戞€ц兘宸€備竴鑸彧鏈夊湪鍏朵粬绛栫暐涓嶅彲鐢ㄦ椂鎵嶈€冭檻銆?([vladmihalcea.com](https://vladmihalcea.com/why-you-should-never-use-the-table-identifier-generator-with-jpa-and-hibernate/?utm_source=chatgpt.com)) |
 
-例如`SEQUENCE`和`TABLE`
+渚嬪`SEQUENCE`鍜宍TABLE`
 
-![image-20251101185610948](构建电商Spring-Boot.assets/image-20251101185610948.png)
+![image-20251101185610948](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101185610948.png)
 
-![image-20251101185614258](构建电商Spring-Boot.assets/image-20251101185614258.png)
+![image-20251101185614258](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101185614258.png)
 
 
 
-#### `@GeneratedValue` 的使用原因：
+#### `@GeneratedValue` 鐨勪娇鐢ㄥ師鍥狅細
 
-使用 `@GeneratedValue` 的主要原因包括以下几点：
+浣跨敤 `@GeneratedValue` 鐨勪富瑕佸師鍥犲寘鎷互涓嬪嚑鐐癸細
 
-1. **简化主键管理**
-    使用 `@GeneratedValue` 可让 ORM（如 Hibernate／EclipseLink）框架自动为实体类的主键字段生成唯一值，而不需要开发人员手动设置或维护。比如当你加一个新实体并保存时，框架会帮你产生 `id`。 [GeeksforGeeks+2Home+2](https://www.geeksforgeeks.org/advance-java/hibernate-generatedvalue-annotation-in-jpa/?utm_source=chatgpt.com)
-2. **保证唯一性与一致性**
-    主键必须唯一，并且通常是系统内部使用的“技术主键”（而不是来自业务逻辑的“天然键”）。通过 `@GeneratedValue`，你可以使用数据库或 ORM 提供的机制确保每条记录都有一个唯一且高效的标识。 [Thorben Janssen+1](https://thorben-janssen.com/jpa-generate-primary-keys/?utm_source=chatgpt.com)
-3. **数据库性能与扩展考虑**
-    合适的生成策略（`IDENTITY`、`SEQUENCE`、`TABLE` 等）可利用数据库内建机制（如自增列、序列）来生成主键，从而提高插入效率、减少冲突。比如使用 `GenerationType.SEQUENCE` 时，可以预分配一批 ID，从而减少每次插入时访问数据库序列的开销。 [Baeldung on Kotlin+1](https://www.baeldung.com/hibernate-identifiers?utm_source=chatgpt.com)
-4. **让实体映射逻辑与数据库细节解耦**
-    通过注解方式指定主键生成策略，实体类不需要硬编码具体的自增逻辑或业务编号生成逻辑，从而让代码更清晰、易维护、数据库迁移（换一种 DB）时调整更容易。 [medium.com+1](https://medium.com/%40gaddamnaveen192/complete-guide-to-jpa-id-generation-auto-identity-sequence-and-table-3044891e88af?utm_source=chatgpt.com)
+1. **绠€鍖栦富閿鐞?*
+    浣跨敤 `@GeneratedValue` 鍙 ORM锛堝 Hibernate锛廍clipseLink锛夋鏋惰嚜鍔ㄤ负瀹炰綋绫荤殑涓婚敭瀛楁鐢熸垚鍞竴鍊硷紝鑰屼笉闇€瑕佸紑鍙戜汉鍛樻墜鍔ㄨ缃垨缁存姢銆傛瘮濡傚綋浣犲姞涓€涓柊瀹炰綋骞朵繚瀛樻椂锛屾鏋朵細甯綘浜х敓 `id`銆?[GeeksforGeeks+2Home+2](https://www.geeksforgeeks.org/advance-java/hibernate-generatedvalue-annotation-in-jpa/?utm_source=chatgpt.com)
+2. **淇濊瘉鍞竴鎬т笌涓€鑷存€?*
+    涓婚敭蹇呴』鍞竴锛屽苟涓旈€氬父鏄郴缁熷唴閮ㄤ娇鐢ㄧ殑鈥滄妧鏈富閿€濓紙鑰屼笉鏄潵鑷笟鍔￠€昏緫鐨勨€滃ぉ鐒堕敭鈥濓級銆傞€氳繃 `@GeneratedValue`锛屼綘鍙互浣跨敤鏁版嵁搴撴垨 ORM 鎻愪緵鐨勬満鍒剁‘淇濇瘡鏉¤褰曢兘鏈変竴涓敮涓€涓旈珮鏁堢殑鏍囪瘑銆?[Thorben Janssen+1](https://thorben-janssen.com/jpa-generate-primary-keys/?utm_source=chatgpt.com)
+3. **鏁版嵁搴撴€ц兘涓庢墿灞曡€冭檻**
+    鍚堥€傜殑鐢熸垚绛栫暐锛坄IDENTITY`銆乣SEQUENCE`銆乣TABLE` 绛夛級鍙埄鐢ㄦ暟鎹簱鍐呭缓鏈哄埗锛堝鑷鍒椼€佸簭鍒楋級鏉ョ敓鎴愪富閿紝浠庤€屾彁楂樻彃鍏ユ晥鐜囥€佸噺灏戝啿绐併€傛瘮濡備娇鐢?`GenerationType.SEQUENCE` 鏃讹紝鍙互棰勫垎閰嶄竴鎵?ID锛屼粠鑰屽噺灏戞瘡娆℃彃鍏ユ椂璁块棶鏁版嵁搴撳簭鍒楃殑寮€閿€銆?[Baeldung on Kotlin+1](https://www.baeldung.com/hibernate-identifiers?utm_source=chatgpt.com)
+4. **璁╁疄浣撴槧灏勯€昏緫涓庢暟鎹簱缁嗚妭瑙ｈ€?*
+    閫氳繃娉ㄨВ鏂瑰紡鎸囧畾涓婚敭鐢熸垚绛栫暐锛屽疄浣撶被涓嶉渶瑕佺‖缂栫爜鍏蜂綋鐨勮嚜澧為€昏緫鎴栦笟鍔＄紪鍙风敓鎴愰€昏緫锛屼粠鑰岃浠ｇ爜鏇存竻鏅般€佹槗缁存姢銆佹暟鎹簱杩佺Щ锛堟崲涓€绉?DB锛夋椂璋冩暣鏇村鏄撱€?[medium.com+1](https://medium.com/%40gaddamnaveen192/complete-guide-to-jpa-id-generation-auto-identity-sequence-and-table-3044891e88af?utm_source=chatgpt.com)
 
 
 
@@ -1018,28 +1018,28 @@ spring.jpa.hibernate.ddl-auto=none
 
 ### JPA Repositories
 
-概念图：
+姒傚康鍥撅細
 
-![image-20251101211719298](构建电商Spring-Boot.assets/image-20251101211719298.png)
+![image-20251101211719298](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101211719298.png)
 
-![image-20251101202704848](构建电商Spring-Boot.assets/image-20251101202704848.png)
+![image-20251101202704848](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251101202704848.png)
 
-新建一个**负责数据访问（操作数据库）`CategoryRepository`**，通常继承 Spring Data JPA 的接口
+鏂板缓涓€涓?*璐熻矗鏁版嵁璁块棶锛堟搷浣滄暟鎹簱锛塦CategoryRepository`**锛岄€氬父缁ф壙 Spring Data JPA 鐨勬帴鍙?
 
 ```java
-// JapRepository <实体， 主键的字符类型>
+// JapRepository <瀹炰綋锛?涓婚敭鐨勫瓧绗︾被鍨?
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 }
 ```
 
-| 特性         | `CrudRepository`                      | `JpaRepository`                                         |
+| 鐗规€?        | `CrudRepository`                      | `JpaRepository`                                         |
 | ------------ | ------------------------------------- | ------------------------------------------------------- |
-| 继承关系     | 基础接口                              | 继承 `CrudRepository` + `PagingAndSortingRepository`    |
-| 核心方法     | `save`, `findById`, `delete`, `count` | **全部 + 额外高级功能**                                 |
-| 额外方法     | 无                                    | `findAll()`, `deleteAll()`, `flush()`, `saveAndFlush()` |
-| 分页排序     | 无                                    | 支持 `Pageable`                                         |
-| **是否推荐** | **仅用于极简场景**                    | **99% 项目用这个**                                      |
+| 缁ф壙鍏崇郴     | 鍩虹鎺ュ彛                              | 缁ф壙 `CrudRepository` + `PagingAndSortingRepository`    |
+| 鏍稿績鏂规硶     | `save`, `findById`, `delete`, `count` | **鍏ㄩ儴 + 棰濆楂樼骇鍔熻兘**                                 |
+| 棰濆鏂规硶     | 鏃?                                   | `findAll()`, `deleteAll()`, `flush()`, `saveAndFlush()` |
+| 鍒嗛〉鎺掑簭     | 鏃?                                   | 鏀寔 `Pageable`                                         |
+| **鏄惁鎺ㄨ崘** | **浠呯敤浜庢瀬绠€鍦烘櫙**                    | **99% 椤圭洰鐢ㄨ繖涓?*                                      |
 
 
 
@@ -1107,12 +1107,12 @@ public class CategoryServiceImpl implements CategoryService{
 
 //    @Override
 //    public Category updateCategory(Category category, Long categoryId) {
-//        // 使用 Stream 查找 ID 匹配的分类，返回 Optional 包装的结果
+//        // 浣跨敤 Stream 鏌ユ壘 ID 鍖归厤鐨勫垎绫伙紝杩斿洖 Optional 鍖呰鐨勭粨鏋?
 //        Optional<Category> optionalCategory = categories.stream()
 //                .filter(c -> c.getCategoryId().equals(categoryId))
 //                .findFirst();
 //
-//        // 判断查询结果是否为空
+//        // 鍒ゆ柇鏌ヨ缁撴灉鏄惁涓虹┖
 //        if (optionalCategory.isPresent()) {
 //            Category existingCategory = optionalCategory.get();
 //            existingCategory.setCategoryName(category.getCategoryName());
@@ -1132,7 +1132,7 @@ public class CategoryServiceImpl implements CategoryService{
                 .filter(c -> c.getCategoryId().equals(categoryId))
                 .findFirst();
 
-        // 判断查询结果是否为空
+        // 鍒ゆ柇鏌ヨ缁撴灉鏄惁涓虹┖
         if (optionalCategory.isPresent()) {
             Category existingCategory = optionalCategory.get();
             existingCategory.setCategoryName(category.getCategoryName());
@@ -1151,50 +1151,50 @@ public class CategoryServiceImpl implements CategoryService{
 
 
 
-#### 为什么 **POST（新增）** 会变成 **UPDATE（修改）**？
+#### 涓轰粈涔?**POST锛堟柊澧烇級** 浼氬彉鎴?**UPDATE锛堜慨鏀癸級**锛?
 
 ------
 
-核心原因：**save() 方法的行为取决于 id 是否为 null**
+鏍稿績鍘熷洜锛?*save() 鏂规硶鐨勮涓哄彇鍐充簬 id 鏄惁涓?null**
 
-问题原因：
+闂鍘熷洜锛?
 
-| 原因                                       | 解释     |
+| 鍘熷洜                                       | 瑙ｉ噴     |
 | ------------------------------------------ | -------- |
-| **1. `save()` 看 `id` 决定 INSERT/UPDATE** | JPA 规范 |
-| **2. 你在 POST 里传了 `categoryId`**       | 人为错误 |
-| **3. 以为“新增要传 ID”**                   | 误解     |
-| **4. 复制了 GET/PUT 的请求体**             | 操作失误 |
+| **1. `save()` 鐪?`id` 鍐冲畾 INSERT/UPDATE** | JPA 瑙勮寖 |
+| **2. 浣犲湪 POST 閲屼紶浜?`categoryId`**       | 浜轰负閿欒 |
+| **3. 浠ヤ负鈥滄柊澧炶浼?ID鈥?*                   | 璇В     |
+| **4. 澶嶅埗浜?GET/PUT 鐨勮姹備綋**             | 鎿嶄綔澶辫 |
 
-过程说明：
+杩囩▼璇存槑锛?
 
-| 步骤 | 说明                                                         |
+| 姝ラ | 璇存槑                                                         |
 | ---- | ------------------------------------------------------------ |
-| 1    | 你发 POST 请求，带了 `{"categoryId": 1, "categoryName": "Phones"}` |
-| 2    | Spring 反序列化成 `Category` 对象，`categoryId = 1`          |
-| 3    | `createCategory(category)` 调用 `save(category)`             |
-| 4    | Hibernate 看到 `id = 1` → 认为这是一个 **“已存在的实体”**    |
-| 5    | 去数据库查 `WHERE category_id = 1`                           |
-| 6    | 如果查到 → **执行 UPDATE** 如果查不到 → **执行 INSERT**（但 ID 仍是你传的 `1`） |
-| 7    | 你以为是“新增”，其实可能是 **修改了别人** 或 **跳过了自增**  |
+| 1    | 浣犲彂 POST 璇锋眰锛屽甫浜?`{"categoryId": 1, "categoryName": "Phones"}` |
+| 2    | Spring 鍙嶅簭鍒楀寲鎴?`Category` 瀵硅薄锛宍categoryId = 1`          |
+| 3    | `createCategory(category)` 璋冪敤 `save(category)`             |
+| 4    | Hibernate 鐪嬪埌 `id = 1` 鈫?璁や负杩欐槸涓€涓?**鈥滃凡瀛樺湪鐨勫疄浣撯€?*    |
+| 5    | 鍘绘暟鎹簱鏌?`WHERE category_id = 1`                           |
+| 6    | 濡傛灉鏌ュ埌 鈫?**鎵ц UPDATE** 濡傛灉鏌ヤ笉鍒?鈫?**鎵ц INSERT**锛堜絾 ID 浠嶆槸浣犱紶鐨?`1`锛?|
+| 7    | 浣犱互涓烘槸鈥滄柊澧炩€濓紝鍏跺疄鍙兘鏄?**淇敼浜嗗埆浜?* 鎴?**璺宠繃浜嗚嚜澧?*  |
 
-核心设计：
+鏍稿績璁捐锛?
 
-| 好处          | 说明                                          |
+| 濂藉          | 璇存槑                                          |
 | ------------- | --------------------------------------------- |
-| **统一接口**  | 一个 `save()` 同时支持新增和修改              |
-| **简化代码**  | 不需要写 `if (id == null) insert else update` |
-| **符合 REST** | POST = 创建新资源，PUT = 更新资源             |
+| **缁熶竴鎺ュ彛**  | 涓€涓?`save()` 鍚屾椂鏀寔鏂板鍜屼慨鏀?             |
+| **绠€鍖栦唬鐮?*  | 涓嶉渶瑕佸啓 `if (id == null) insert else update` |
+| **绗﹀悎 REST** | POST = 鍒涘缓鏂拌祫婧愶紝PUT = 鏇存柊璧勬簮             |
 
-比喻：
+姣斿柣锛?
 
-| 场景                                    | 对应                             |
+| 鍦烘櫙                                    | 瀵瑰簲                             |
 | --------------------------------------- | -------------------------------- |
-| 你去饭店点餐                            | POST                             |
-| 你说：“我要一份宫保鸡丁”                | `{ "categoryName": "宫保鸡丁" }` |
-| 服务员不会问：“你要第几桌？”            | 不需要 `categoryId`              |
-| 但如果你说：“我要 **3号桌** 的宫保鸡丁” | 带了 `categoryId`                |
-| 服务员会以为你要 **改单**               | → 执行 UPDATE                    |
+| 浣犲幓楗簵鐐归                            | POST                             |
+| 浣犺锛氣€滄垜瑕佷竴浠藉淇濋浮涓佲€?               | `{ "categoryName": "瀹繚楦′竵" }` |
+| 鏈嶅姟鍛樹笉浼氶棶锛氣€滀綘瑕佺鍑犳锛熲€?           | 涓嶉渶瑕?`categoryId`              |
+| 浣嗗鏋滀綘璇达細鈥滄垜瑕?**3鍙锋** 鐨勫淇濋浮涓佲€?| 甯︿簡 `categoryId`                |
+| 鏈嶅姟鍛樹細浠ヤ负浣犺 **鏀瑰崟**               | 鈫?鎵ц UPDATE                    |
 
 
 
@@ -1206,17 +1206,17 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Category updateCategory(Category category, Long categoryId) {
 
-        // “查找 + 判断是否存在” 的标准模式，根据categoryId 去调用categoryRepository的JPA data的findById
+        // 鈥滄煡鎵?+ 鍒ゆ柇鏄惁瀛樺湪鈥?鐨勬爣鍑嗘ā寮忥紝鏍规嵁categoryId 鍘昏皟鐢╟ategoryRepository鐨凧PA data鐨刦indById
         Optional<Category> savedCategoryOptional = categoryRepository.findById(categoryId);
 
-        // 2. 若不存在，抛出 404
+        // 2. 鑻ヤ笉瀛樺湪锛屾姏鍑?404
         Category savedCategory = savedCategoryOptional
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found"));
 
-        // 把前端传进来的 id 设回去（防止前端漏传或被篡改）
+        // 鎶婂墠绔紶杩涙潵鐨?id 璁惧洖鍘伙紙闃叉鍓嶇婕忎紶鎴栬绡℃敼锛?
         category.setCategoryId(categoryId);
 
-        // JPA 会根据主键判断是 UPDATE 还是 INSERT
+        // JPA 浼氭牴鎹富閿垽鏂槸 UPDATE 杩樻槸 INSERT
         savedCategory = categoryRepository.save(category);
         return savedCategory;
     }
@@ -1224,7 +1224,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 
 
-旧的写法
+鏃х殑鍐欐硶
 
 ```java
     @Override
@@ -1236,7 +1236,7 @@ public class CategoryServiceImpl implements CategoryService{
                 .filter(c -> c.getCategoryId().equals(categoryId))
                 .findFirst();
 
-        // 判断查询结果是否为空
+        // 鍒ゆ柇鏌ヨ缁撴灉鏄惁涓虹┖
         if (optionalCategory.isPresent()) {
             Category existingCategory = optionalCategory.get();
             existingCategory.setCategoryName(category.getCategoryName());
@@ -1252,59 +1252,59 @@ public class CategoryServiceImpl implements CategoryService{
 
 
 
-| 维度               | 当前写法（`findById` + `save`）                              | 旧写法（`findAll` + 手动 set）                        |
+| 缁村害               | 褰撳墠鍐欐硶锛坄findById` + `save`锛?                             | 鏃у啓娉曪紙`findAll` + 鎵嬪姩 set锛?                       |
 | ------------------ | ------------------------------------------------------------ | ----------------------------------------------------- |
-| **查询效率**       | **O(1)**：直接走数据库主键索引                               | **O(n)**：全表扫描，数据量大时极慢                    |
-| **内存占用**       | 只加载 **1 条记录**                                          | 加载 **全部记录**，容易 OOM                           |
-| **SQL 语句**       | `SELECT ... WHERE id = ?` → `UPDATE ... SET ... WHERE id = ?` | `SELECT * FROM category` → 可能一次 `UPDATE`          |
-| **字段更新灵活性** | **全字段覆盖**（只要前端传了非 null 就更新） 若想部分更新需额外处理 | **硬编码只更新 `categoryName`**，想加新字段必须改代码 |
-| **代码简洁度**     | **极简**，JPA 自动处理 merge                                 | 冗长，手动遍历 + 手动复制字段                         |
-| **事务/并发安全**  | 直接在同一个事务内完成查找+更新                              | 同上（但因全表加载可能引发更大锁竞争）                |
-| **扩展性**         | 易于配合 `BeanUtils.copyProperties(category, savedCategory, "categoryId")` 实现 **部分更新** | 每新增字段都要改 `setXxx`                             |
-| **是否推荐**       | **强烈推荐**（生产环境标准做法）                             | **不推荐**，仅适合极小表或学习演示                    |
+| **鏌ヨ鏁堢巼**       | **O(1)**锛氱洿鎺ヨ蛋鏁版嵁搴撲富閿储寮?                              | **O(n)**锛氬叏琛ㄦ壂鎻忥紝鏁版嵁閲忓ぇ鏃舵瀬鎱?                   |
+| **鍐呭瓨鍗犵敤**       | 鍙姞杞?**1 鏉¤褰?*                                          | 鍔犺浇 **鍏ㄩ儴璁板綍**锛屽鏄?OOM                           |
+| **SQL 璇彞**       | `SELECT ... WHERE id = ?` 鈫?`UPDATE ... SET ... WHERE id = ?` | `SELECT * FROM category` 鈫?鍙兘涓€娆?`UPDATE`          |
+| **瀛楁鏇存柊鐏垫椿鎬?* | **鍏ㄥ瓧娈佃鐩?*锛堝彧瑕佸墠绔紶浜嗛潪 null 灏辨洿鏂帮級 鑻ユ兂閮ㄥ垎鏇存柊闇€棰濆澶勭悊 | **纭紪鐮佸彧鏇存柊 `categoryName`**锛屾兂鍔犳柊瀛楁蹇呴』鏀逛唬鐮?|
+| **浠ｇ爜绠€娲佸害**     | **鏋佺畝**锛孞PA 鑷姩澶勭悊 merge                                 | 鍐楅暱锛屾墜鍔ㄩ亶鍘?+ 鎵嬪姩澶嶅埗瀛楁                         |
+| **浜嬪姟/骞跺彂瀹夊叏**  | 鐩存帴鍦ㄥ悓涓€涓簨鍔″唴瀹屾垚鏌ユ壘+鏇存柊                              | 鍚屼笂锛堜絾鍥犲叏琛ㄥ姞杞藉彲鑳藉紩鍙戞洿澶ч攣绔炰簤锛?               |
+| **鎵╁睍鎬?*         | 鏄撲簬閰嶅悎 `BeanUtils.copyProperties(category, savedCategory, "categoryId")` 瀹炵幇 **閮ㄥ垎鏇存柊** | 姣忔柊澧炲瓧娈甸兘瑕佹敼 `setXxx`                             |
+| **鏄惁鎺ㄨ崘**       | **寮虹儓鎺ㄨ崘**锛堢敓浜х幆澧冩爣鍑嗗仛娉曪級                             | **涓嶆帹鑽?*锛屼粎閫傚悎鏋佸皬琛ㄦ垨瀛︿範婕旂ず                    |
 
 
 
-##### update个人的疑问：
+##### update涓汉鐨勭枒闂細
 
-**为什么`JPA`在设计时候不直接将`update`和`insert`分开？**
+**涓轰粈涔坄JPA`鍦ㄨ璁℃椂鍊欎笉鐩存帴灏哷update`鍜宍insert`鍒嗗紑锛?*
 
-可以看看他的底层：
+鍙互鐪嬬湅浠栫殑搴曞眰锛?
 
 ```java
 if (entity.isNew()) {
     entityManager.persist(entity);   // INSERT
 } else {
-    entityManager.merge(entity);     // UPDATE (或 INSERT 如果 ID 不存在)
+    entityManager.merge(entity);     // UPDATE (鎴?INSERT 濡傛灉 ID 涓嶅瓨鍦?
 }
 ```
 
-- isNew() 默认判断：**@Id 是否为 null**（可通过 @Entity 的 org.hibernate.annotations.Entity 自定义）
+- isNew() 榛樿鍒ゆ柇锛?*@Id 鏄惁涓?null**锛堝彲閫氳繃 @Entity 鐨?org.hibernate.annotations.Entity 鑷畾涔夛級
 
 - merge()
 
-   会：
+   浼氾細
 
-  1. SELECT 查出数据库中的实体
-  2. 把传进来对象的字段 **复制过去**
-  3. UPDATE 回去
+  1. SELECT 鏌ュ嚭鏁版嵁搴撲腑鐨勫疄浣?
+  2. 鎶婁紶杩涙潵瀵硅薄鐨勫瓧娈?**澶嶅埗杩囧幓**
+  3. UPDATE 鍥炲幓
 
-> 所以 save() **一定会触发一次 SELECT**（除非在同一个 EntityManager 会话中已加载）
+> 鎵€浠?save() **涓€瀹氫細瑙﹀彂涓€娆?SELECT**锛堥櫎闈炲湪鍚屼竴涓?EntityManager 浼氳瘽涓凡鍔犺浇锛?
 
 
 
-**总结为什么不分开写**
+**鎬荤粨涓轰粈涔堜笉鍒嗗紑鍐?*
 
-| 优点               | 说明                                      |
+| 浼樼偣               | 璇存槑                                      |
 | ------------------ | ----------------------------------------- |
-| **统一接口**       | 调用者只关心“保存”，不关心新旧            |
-| **减少样板代码**   | 无需 `if (id == null) insert else update` |
-| **符合 JPA 规范**  | 基于 `persist` / `merge` 设计             |
-| **易于测试和维护** | 所有 CRUD 走同一套流程                    |
+| **缁熶竴鎺ュ彛**       | 璋冪敤鑰呭彧鍏冲績鈥滀繚瀛樷€濓紝涓嶅叧蹇冩柊鏃?           |
+| **鍑忓皯鏍锋澘浠ｇ爜**   | 鏃犻渶 `if (id == null) insert else update` |
+| **绗﹀悎 JPA 瑙勮寖**  | 鍩轰簬 `persist` / `merge` 璁捐             |
+| **鏄撲簬娴嬭瘯鍜岀淮鎶?* | 鎵€鏈?CRUD 璧板悓涓€濂楁祦绋?                   |
 
 
 
-或者更简洁的写法
+鎴栬€呮洿绠€娲佺殑鍐欐硶
 
 ```java
   @Override
@@ -1313,9 +1313,9 @@ if (entity.isNew()) {
 		Category savedCategory = CategoryRepository.findById(categoryId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
         
-         // 确保Id传回来，保护数据
+         // 纭繚Id浼犲洖鏉ワ紝淇濇姢鏁版嵁
          savedCategory.setCategoryId(categoryId);
-         // 让JPA自行判断是Update还是Insert
+         // 璁㎎PA鑷鍒ゆ柇鏄疷pdate杩樻槸Insert
          savedCategory = CategoryRepository(category);
          return savedCategory;
     }
@@ -1324,16 +1324,16 @@ if (entity.isNew()) {
 
 
 
-再次完善下Delete
+鍐嶆瀹屽杽涓婦elete
 
 ```java
     @Override
     public String deleteCategory(Long categoryId) {
 
-        // 查找+判断 基本模式
+        // 鏌ユ壘+鍒ゆ柇 鍩烘湰妯″紡
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
 
-        // 如果不存在，返回404
+        // 濡傛灉涓嶅瓨鍦紝杩斿洖404
         Category Category = optionalCategory
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
 
@@ -1344,7 +1344,7 @@ if (entity.isNew()) {
 
 
 
-旧的：
+鏃х殑锛?
 
 ```java
     @Override
@@ -1363,7 +1363,7 @@ if (entity.isNew()) {
 
 
 
-或者简单模式：
+鎴栬€呯畝鍗曟ā寮忥細
 
 ```java
   @Override
@@ -1379,23 +1379,23 @@ if (entity.isNew()) {
 
 
 
-##### 删除的问题？
+##### 鍒犻櫎鐨勯棶棰橈紵
 
-> **“为什么 deleteCategory 只需要传 categoryId，而 updateCategory 却要在 category 对象上 setCategoryId(id)？”**
+> **鈥滀负浠€涔?deleteCategory 鍙渶瑕佷紶 categoryId锛岃€?updateCategory 鍗磋鍦?category 瀵硅薄涓?setCategoryId(id)锛熲€?*
 
-答案就在于：**delete 是“按 ID 删除”，而 update 是“按实体保存”** —— 两者的 **JPA 机制完全不同**。
+绛旀灏卞湪浜庯細**delete 鏄€滄寜 ID 鍒犻櫎鈥濓紝鑰?update 鏄€滄寜瀹炰綋淇濆瓨鈥?* 鈥斺€?涓よ€呯殑 **JPA 鏈哄埗瀹屽叏涓嶅悓**銆?
 
 
 
-##### 总结：
+##### 鎬荤粨锛?
 
-| 项目             | 删除                      | 更新                              |
+| 椤圭洰             | 鍒犻櫎                      | 鏇存柊                              |
 | ---------------- | ------------------------- | --------------------------------- |
-| 是否需要实体     | 不需要                    | 必须                              |
-| 是否需要 `setId` | 不需要                    | **必须**                          |
-| 推荐方法         | `deleteById(id)`          | `save(entity)` + `setId(id)`      |
-| 底层 SQL         | `DELETE ... WHERE id = ?` | `UPDATE ... SET ... WHERE id = ?` |
-| 是否需要先查     | `existsById`（可选）      | `findById`（必须，防覆盖）        |
+| 鏄惁闇€瑕佸疄浣?    | 涓嶉渶瑕?                   | 蹇呴』                              |
+| 鏄惁闇€瑕?`setId` | 涓嶉渶瑕?                   | **蹇呴』**                          |
+| 鎺ㄨ崘鏂规硶         | `deleteById(id)`          | `save(entity)` + `setId(id)`      |
+| 搴曞眰 SQL         | `DELETE ... WHERE id = ?` | `UPDATE ... SET ... WHERE id = ?` |
+| 鏄惁闇€瑕佸厛鏌?    | `existsById`锛堝彲閫夛級      | `findById`锛堝繀椤伙紝闃茶鐩栵級        |
 
 
 
@@ -1403,48 +1403,48 @@ if (entity.isNew()) {
 
 [09:08:28](https://www.youtube.com/watch?v=m559BxR30ls&t=32908s) 
 
-实验小结：
+瀹為獙灏忕粨锛?
 
-实验一：
+瀹為獙涓€锛?
 
-如果我在我的`model`实体类中删除了`getter` ` setter`方法会发生什么？
-
-
-
-![image-20251102165009259](构建电商Spring-Boot.assets/image-20251102165009259.png)
-
-这可以发现，将name的`getter setter`方法取消，不会报错，但是当你插入数据的时候，会显示`NULL`
+濡傛灉鎴戝湪鎴戠殑`model`瀹炰綋绫讳腑鍒犻櫎浜哷getter` ` setter`鏂规硶浼氬彂鐢熶粈涔堬紵
 
 
 
-实验二：
+![image-20251102165009259](鏋勫缓鐢靛晢Spring-Boot.assets/image-20251102165009259.png)
+
+杩欏彲浠ュ彂鐜帮紝灏唍ame鐨刞getter setter`鏂规硶鍙栨秷锛屼笉浼氭姤閿欙紝浣嗘槸褰撲綘鎻掑叆鏁版嵁鐨勬椂鍊欙紝浼氭樉绀篳NULL`
+
+
+
+瀹為獙浜岋細
 
 ```properties
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 ```
 
-善用hibernate，当我们执行插入操作或者其他CRUD的操作时候：
+鍠勭敤hibernate锛屽綋鎴戜滑鎵ц鎻掑叆鎿嶄綔鎴栬€呭叾浠朇RUD鐨勬搷浣滄椂鍊欙細
 
-我们可以再终端中看到`JPA`到底执行了什么样的`sql`语句，for example:
+鎴戜滑鍙互鍐嶇粓绔腑鐪嬪埌`JPA`鍒板簳鎵ц浜嗕粈涔堟牱鐨刞sql`璇彞锛宖or example:
 
-<img src="构建电商Spring-Boot.assets/image-20251102165311542.png" alt="image-20251102165311542" style="zoom:50%;" />
-
-
-
-实验三：
-
-<img src="构建电商Spring-Boot.assets/image-20251102165635803.png" alt="image-20251102165635803" style="zoom:50%;" />
+<img src="鏋勫缓鐢靛晢Spring-Boot.assets/image-20251102165311542.png" alt="image-20251102165311542" style="zoom:50%;" />
 
 
 
-<img src="构建电商Spring-Boot.assets/image-20251102165640486.png" alt="image-20251102165640486" style="zoom:50%;" />
+瀹為獙涓夛細
+
+<img src="鏋勫缓鐢靛晢Spring-Boot.assets/image-20251102165635803.png" alt="image-20251102165635803" style="zoom:50%;" />
 
 
 
-这些都表明：通过继承JPA,一些类型是可自定义的：例如ID,
+<img src="鏋勫缓鐢靛晢Spring-Boot.assets/image-20251102165640486.png" alt="image-20251102165640486" style="zoom:50%;" />
 
-还有案例中的`category`已经定义成为一个实体类。
+
+
+杩欎簺閮借〃鏄庯細閫氳繃缁ф壙JPA,涓€浜涚被鍨嬫槸鍙嚜瀹氫箟鐨勶細渚嬪ID,
+
+杩樻湁妗堜緥涓殑`category`宸茬粡瀹氫箟鎴愪负涓€涓疄浣撶被銆?
 
 
 
@@ -1454,7 +1454,7 @@ spring.jpa.properties.hibernate.format_sql=true
 
 Lombok
 
-旧的代码：
+鏃х殑浠ｇ爜锛?
 
 ```java
 package com.ecommerce.project.model;
@@ -1497,7 +1497,7 @@ public class Category {
 
 
 
-加入Lombok注解后
+鍔犲叆Lombok娉ㄨВ鍚?
 
 ```java
 @Entity(name = "CATEGORIES")
@@ -1516,13 +1516,13 @@ public class Category {
 
 
 
-来自Gork的总结：
+鏉ヨ嚜Gork鐨勬€荤粨锛?
 
-你用的是 **Lombok**，一个能大幅减少 Java 样板代码的库。下面我 **逐行解释你代码中每个 Lombok 注解的作用**，并说明 **它们背后生成了哪些代码**。
+浣犵敤鐨勬槸 **Lombok**锛屼竴涓兘澶у箙鍑忓皯 Java 鏍锋澘浠ｇ爜鐨勫簱銆備笅闈㈡垜 **閫愯瑙ｉ噴浣犱唬鐮佷腑姣忎釜 Lombok 娉ㄨВ鐨勪綔鐢?*锛屽苟璇存槑 **瀹冧滑鑳屽悗鐢熸垚浜嗗摢浜涗唬鐮?*銆?
 
 ------
 
-##### 实体类
+##### 瀹炰綋绫?
 
 ```java
 @Entity(name = "CATEGORIES")
@@ -1541,36 +1541,36 @@ public class Category {
 
 ------
 
-##### 一、@Entity(name = "CATEGORIES")
+##### 涓€銆丂Entity(name = "CATEGORIES")
 
-| 注解                | 作用                                                       |
+| 娉ㄨВ                | 浣滅敤                                                       |
 | ------------------- | ---------------------------------------------------------- |
-| @Entity             | 标记这是一个 **JPA 实体类**，会被 Hibernate 映射到数据库表 |
-| name = "CATEGORIES" | 显式指定 **逻辑表名** 为 CATEGORIES                        |
+| @Entity             | 鏍囪杩欐槸涓€涓?**JPA 瀹炰綋绫?*锛屼細琚?Hibernate 鏄犲皠鍒版暟鎹簱琛?|
+| name = "CATEGORIES" | 鏄惧紡鎸囧畾 **閫昏緫琛ㄥ悕** 涓?CATEGORIES                        |
 
-> **默认行为**：如果不写 name，表名 = 类名 = Category → 数据库表名 category **你写 name = "CATEGORIES"** → 数据库表名强制为 **CATEGORIES**（大写）
+> **榛樿琛屼负**锛氬鏋滀笉鍐?name锛岃〃鍚?= 绫诲悕 = Category 鈫?鏁版嵁搴撹〃鍚?category **浣犲啓 name = "CATEGORIES"** 鈫?鏁版嵁搴撹〃鍚嶅己鍒朵负 **CATEGORIES**锛堝ぇ鍐欙級
 
 ------
 
-##### 二、@Data
+##### 浜屻€丂Data
 
-> **最强大、最常用的 Lombok 注解！**
+> **鏈€寮哄ぇ銆佹渶甯哥敤鐨?Lombok 娉ㄨВ锛?*
 
-###### @Data = 以下 6 个注解的**合集**：
+###### @Data = 浠ヤ笅 6 涓敞瑙ｇ殑**鍚堥泦**锛?
 
-| 注解                     | 生成的代码                              |
+| 娉ㄨВ                     | 鐢熸垚鐨勪唬鐮?                             |
 | ------------------------ | --------------------------------------- |
-| @Getter                  | 所有字段自动生成 getXxx()               |
-| @Setter                  | 所有字段自动生成 setXxx()               |
-| @ToString                | 生成 toString()                         |
-| @EqualsAndHashCode       | 生成 equals() 和 hashCode()             |
-| @RequiredArgsConstructor | 为 **final 或 @NonNull 字段**生成构造器 |
+| @Getter                  | 鎵€鏈夊瓧娈佃嚜鍔ㄧ敓鎴?getXxx()               |
+| @Setter                  | 鎵€鏈夊瓧娈佃嚜鍔ㄧ敓鎴?setXxx()               |
+| @ToString                | 鐢熸垚 toString()                         |
+| @EqualsAndHashCode       | 鐢熸垚 equals() 鍜?hashCode()             |
+| @RequiredArgsConstructor | 涓?**final 鎴?@NonNull 瀛楁**鐢熸垚鏋勯€犲櫒 |
 
-> **注意**：你没有 final 字段，所以 @RequiredArgsConstructor **不会生成任何构造器**
+> **娉ㄦ剰**锛氫綘娌℃湁 final 瀛楁锛屾墍浠?@RequiredArgsConstructor **涓嶄細鐢熸垚浠讳綍鏋勯€犲櫒**
 
 ------
 
-###### @Data 实际为你生成了：
+###### @Data 瀹為檯涓轰綘鐢熸垚浜嗭細
 
 ```java
 // getter
@@ -1596,21 +1596,21 @@ public int hashCode() { ... }
 
 ------
 
-##### 三、@NoArgsConstructor
+##### 涓夈€丂NoArgsConstructor
 
-###### 生成 **无参构造器**（JPA **必须要求**！）
+###### 鐢熸垚 **鏃犲弬鏋勯€犲櫒**锛圝PA **蹇呴』瑕佹眰**锛侊級
 
 ```
 public Category() {}
 ```
 
-> **为什么 JPA 需要无参构造器？** 因为 Hibernate 在加载实体时，先 new Category()，再通过反射 setXxx() 赋值。
+> **涓轰粈涔?JPA 闇€瑕佹棤鍙傛瀯閫犲櫒锛?* 鍥犱负 Hibernate 鍦ㄥ姞杞藉疄浣撴椂锛屽厛 new Category()锛屽啀閫氳繃鍙嶅皠 setXxx() 璧嬪€笺€?
 
 ------
 
-##### 四、@AllArgsConstructor
+##### 鍥涖€丂AllArgsConstructor
 
-###### 生成 **全参构造器**
+###### 鐢熸垚 **鍏ㄥ弬鏋勯€犲櫒**
 
 ```java
 public Category(Long categoryId, String categoryName) {
@@ -1619,4 +1619,4 @@ public Category(Long categoryId, String categoryName) {
 }
 ```
 
-> 常用于 **测试、Builder 模式、DTO 转换** 等场景
+> 甯哥敤浜?**娴嬭瘯銆丅uilder 妯″紡銆丏TO 杞崲** 绛夊満鏅
